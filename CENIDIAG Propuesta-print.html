@@ -1,0 +1,2281 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CENIDIAG — Propuesta para Porkcolombia</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #FAF6F2; color: #1A1715; font-family: 'Manrope', system-ui; -webkit-font-smoothing: antialiased; }
+  ::selection { background: #F65275; color: #fff; }
+  .grain { position: fixed; inset: 0; pointer-events: none; opacity: 0.4; z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.09 0 0 0 0 0.08 0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); }
+
+
+  @page { size: A4; margin: 10mm; }
+  @media print {
+    html, body { background: #FAF6F2 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .grain { display: none !important; }
+    .twk-panel, [data-noncommentable] { display: none !important; }
+    [data-screen-label], section, .print-block { break-inside: avoid; page-break-inside: avoid; }
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+<script>
+  window.addEventListener('load', () => {
+    const start = () => {
+      const root = document.getElementById('root');
+      const ready = root && root.children.length > 0;
+      if (!ready) return setTimeout(start, 200);
+      Promise.resolve(document.fonts && document.fonts.ready).then(() => {
+        setTimeout(() => window.print(), 700);
+      });
+    };
+    setTimeout(start, 500);
+  });
+</script>
+</head>
+<body>
+<div class="grain"></div>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" data-presets="react">
+/* === ios-frame === */
+(function(){
+
+
+// iOS.jsx — Simplified iOS 26 (Liquid Glass) device frame
+// Based on the iOS 26 UI Kit + Figma status bar spec. No assets, no deps.
+// Exports: IOSDevice, IOSStatusBar, IOSNavBar, IOSGlassPill, IOSList, IOSListRow, IOSKeyboard
+
+// ─────────────────────────────────────────────────────────────
+// Status bar
+// ─────────────────────────────────────────────────────────────
+function IOSStatusBar({ dark = false, time = '9:41' }) {
+  const c = dark ? '#fff' : '#000';
+  return (
+    <div style={{
+      display: 'flex', gap: 154, alignItems: 'center', justifyContent: 'center',
+      padding: '21px 24px 19px', boxSizing: 'border-box',
+      position: 'relative', zIndex: 20, width: '100%',
+    }}>
+      <div style={{ flex: 1, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 1.5 }}>
+        <span style={{
+          fontFamily: '-apple-system, "SF Pro", system-ui', fontWeight: 590,
+          fontSize: 17, lineHeight: '22px', color: c,
+        }}>{time}</span>
+      </div>
+      <div style={{ flex: 1, height: 22, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, paddingTop: 1, paddingRight: 1 }}>
+        <svg width="19" height="12" viewBox="0 0 19 12">
+          <rect x="0" y="7.5" width="3.2" height="4.5" rx="0.7" fill={c}/>
+          <rect x="4.8" y="5" width="3.2" height="7" rx="0.7" fill={c}/>
+          <rect x="9.6" y="2.5" width="3.2" height="9.5" rx="0.7" fill={c}/>
+          <rect x="14.4" y="0" width="3.2" height="12" rx="0.7" fill={c}/>
+        </svg>
+        <svg width="17" height="12" viewBox="0 0 17 12">
+          <path d="M8.5 3.2C10.8 3.2 12.9 4.1 14.4 5.6L15.5 4.5C13.7 2.7 11.2 1.5 8.5 1.5C5.8 1.5 3.3 2.7 1.5 4.5L2.6 5.6C4.1 4.1 6.2 3.2 8.5 3.2Z" fill={c}/>
+          <path d="M8.5 6.8C9.9 6.8 11.1 7.3 12 8.2L13.1 7.1C11.8 5.9 10.2 5.1 8.5 5.1C6.8 5.1 5.2 5.9 3.9 7.1L5 8.2C5.9 7.3 7.1 6.8 8.5 6.8Z" fill={c}/>
+          <circle cx="8.5" cy="10.5" r="1.5" fill={c}/>
+        </svg>
+        <svg width="27" height="13" viewBox="0 0 27 13">
+          <rect x="0.5" y="0.5" width="23" height="12" rx="3.5" stroke={c} strokeOpacity="0.35" fill="none"/>
+          <rect x="2" y="2" width="20" height="9" rx="2" fill={c}/>
+          <path d="M25 4.5V8.5C25.8 8.2 26.5 7.2 26.5 6.5C26.5 5.8 25.8 4.8 25 4.5Z" fill={c} fillOpacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Liquid glass pill — blur + tint + shine
+// ─────────────────────────────────────────────────────────────
+function IOSGlassPill({ children, dark = false, style = {} }) {
+  return (
+    <div style={{
+      height: 44, minWidth: 44, borderRadius: 9999,
+      position: 'relative', overflow: 'hidden',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      boxShadow: dark
+        ? '0 2px 6px rgba(0,0,0,0.35), 0 6px 16px rgba(0,0,0,0.2)'
+        : '0 1px 3px rgba(0,0,0,0.07), 0 3px 10px rgba(0,0,0,0.06)',
+      ...style,
+    }}>
+      {/* blur + tint */}
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: 9999,
+        backdropFilter: 'blur(12px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(12px) saturate(180%)',
+        background: dark ? 'rgba(120,120,128,0.28)' : 'rgba(255,255,255,0.5)',
+      }} />
+      {/* shine */}
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: 9999,
+        boxShadow: dark
+          ? 'inset 1.5px 1.5px 1px rgba(255,255,255,0.15), inset -1px -1px 1px rgba(255,255,255,0.08)'
+          : 'inset 1.5px 1.5px 1px rgba(255,255,255,0.7), inset -1px -1px 1px rgba(255,255,255,0.4)',
+        border: dark ? '0.5px solid rgba(255,255,255,0.15)' : '0.5px solid rgba(0,0,0,0.06)',
+      }} />
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', padding: '0 4px' }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Navigation bar — glass pills + large title
+// ─────────────────────────────────────────────────────────────
+function IOSNavBar({ title = 'Title', dark = false, trailingIcon = true }) {
+  const muted = dark ? 'rgba(255,255,255,0.6)' : '#404040';
+  const text = dark ? '#fff' : '#000';
+  const pillIcon = (content) => (
+    <IOSGlassPill dark={dark}>
+      <div style={{ width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {content}
+      </div>
+    </IOSGlassPill>
+  );
+  return (
+    <div style={{
+      display: 'flex', flexDirection: 'column', gap: 10,
+      paddingTop: 62, paddingBottom: 10, position: 'relative', zIndex: 5,
+    }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '0 16px',
+      }}>
+        {/* back chevron */}
+        {pillIcon(
+          <svg width="12" height="20" viewBox="0 0 12 20" fill="none" style={{ marginLeft: -1 }}>
+            <path d="M10 2L2 10l8 8" stroke={muted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        )}
+        {/* trailing ellipsis */}
+        {trailingIcon && pillIcon(
+          <svg width="22" height="6" viewBox="0 0 22 6">
+            <circle cx="3" cy="3" r="2.5" fill={muted}/>
+            <circle cx="11" cy="3" r="2.5" fill={muted}/>
+            <circle cx="19" cy="3" r="2.5" fill={muted}/>
+          </svg>
+        )}
+      </div>
+      {/* large title */}
+      <div style={{
+        padding: '0 16px',
+        fontFamily: '-apple-system, system-ui',
+        fontSize: 34, fontWeight: 700, lineHeight: '41px',
+        color: text, letterSpacing: 0.4,
+      }}>{title}</div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Grouped list (inset card, r:26) + row (52px)
+// ─────────────────────────────────────────────────────────────
+function IOSListRow({ title, detail, icon, chevron = true, isLast = false, dark = false }) {
+  const text = dark ? '#fff' : '#000';
+  const sec = dark ? 'rgba(235,235,245,0.6)' : 'rgba(60,60,67,0.6)';
+  const ter = dark ? 'rgba(235,235,245,0.3)' : 'rgba(60,60,67,0.3)';
+  const sep = dark ? 'rgba(84,84,88,0.65)' : 'rgba(60,60,67,0.12)';
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', minHeight: 52,
+      padding: '0 16px', position: 'relative',
+      fontFamily: '-apple-system, system-ui', fontSize: 17,
+      letterSpacing: -0.43,
+    }}>
+      {icon && (
+        <div style={{
+          width: 30, height: 30, borderRadius: 7, background: icon,
+          marginRight: 12, flexShrink: 0,
+        }} />
+      )}
+      <div style={{ flex: 1, color: text }}>{title}</div>
+      {detail && <span style={{ color: sec, marginRight: 6 }}>{detail}</span>}
+      {chevron && (
+        <svg width="8" height="14" viewBox="0 0 8 14" style={{ flexShrink: 0 }}>
+          <path d="M1 1l6 6-6 6" stroke={ter} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      )}
+      {!isLast && (
+        <div style={{
+          position: 'absolute', bottom: 0, right: 0,
+          left: icon ? 58 : 16, height: 0.5, background: sep,
+        }} />
+      )}
+    </div>
+  );
+}
+
+function IOSList({ header, children, dark = false }) {
+  const hc = dark ? 'rgba(235,235,245,0.6)' : 'rgba(60,60,67,0.6)';
+  const bg = dark ? '#1C1C1E' : '#fff';
+  return (
+    <div>
+      {header && (
+        <div style={{
+          fontFamily: '-apple-system, system-ui', fontSize: 13,
+          color: hc, textTransform: 'uppercase',
+          padding: '8px 36px 6px', letterSpacing: -0.08,
+        }}>{header}</div>
+      )}
+      <div style={{
+        background: bg, borderRadius: 26,
+        margin: '0 16px', overflow: 'hidden',
+      }}>{children}</div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Device frame
+// ─────────────────────────────────────────────────────────────
+function IOSDevice({
+  children, width = 402, height = 874, dark = false,
+  title, keyboard = false,
+}) {
+  return (
+    <div style={{
+      width, height, borderRadius: 48, overflow: 'hidden',
+      position: 'relative', background: dark ? '#000' : '#F2F2F7',
+      boxShadow: '0 40px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.12)',
+      fontFamily: '-apple-system, system-ui, sans-serif',
+      WebkitFontSmoothing: 'antialiased',
+    }}>
+      {/* dynamic island */}
+      <div style={{
+        position: 'absolute', top: 11, left: '50%', transform: 'translateX(-50%)',
+        width: 126, height: 37, borderRadius: 24, background: '#000', zIndex: 50,
+      }} />
+      {/* status bar (absolute) */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }}>
+        <IOSStatusBar dark={dark} />
+      </div>
+      {/* nav + content */}
+      <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+        {title !== undefined && <IOSNavBar title={title} dark={dark} />}
+        <div style={{ flex: 1, overflow: 'auto' }}>{children}</div>
+        {keyboard && <IOSKeyboard dark={dark} />}
+      </div>
+      {/* home indicator — always on top */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 60,
+        height: 34, display: 'flex', justifyContent: 'center', alignItems: 'flex-end',
+        paddingBottom: 8, pointerEvents: 'none',
+      }}>
+        <div style={{
+          width: 139, height: 5, borderRadius: 100,
+          background: dark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.25)',
+        }} />
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────
+// Keyboard — iOS 26 liquid glass
+// ─────────────────────────────────────────────────────────────
+function IOSKeyboard({ dark = false }) {
+  const glyph = dark ? 'rgba(255,255,255,0.7)' : '#595959';
+  const sugg = dark ? 'rgba(255,255,255,0.6)' : '#333';
+  const keyBg = dark ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.85)';
+
+  // special-key icons
+  const icons = {
+    shift: <svg width="19" height="17" viewBox="0 0 19 17"><path d="M9.5 1L1 9.5h4.5V16h8V9.5H18L9.5 1z" fill={glyph}/></svg>,
+    del: <svg width="23" height="17" viewBox="0 0 23 17"><path d="M7 1h13a2 2 0 012 2v11a2 2 0 01-2 2H7l-6-7.5L7 1z" fill="none" stroke={glyph} strokeWidth="1.6" strokeLinejoin="round"/><path d="M10 5l7 7M17 5l-7 7" stroke={glyph} strokeWidth="1.6" strokeLinecap="round"/></svg>,
+    ret: <svg width="20" height="14" viewBox="0 0 20 14"><path d="M18 1v6H4m0 0l4-4M4 7l4 4" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  };
+
+  const key = (content, { w, flex, ret, fs = 25, k } = {}) => (
+    <div key={k} style={{
+      height: 42, borderRadius: 8.5,
+      flex: flex ? 1 : undefined, width: w, minWidth: 0,
+      background: ret ? '#08f' : keyBg,
+      boxShadow: '0 1px 0 rgba(0,0,0,0.075)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontFamily: '-apple-system, "SF Compact", system-ui',
+      fontSize: fs, fontWeight: 458, color: ret ? '#fff' : glyph,
+    }}>{content}</div>
+  );
+
+  const row = (keys, pad = 0) => (
+    <div style={{ display: 'flex', gap: 6.5, justifyContent: 'center', padding: `0 ${pad}px` }}>
+      {keys.map(l => key(l, { flex: true, k: l }))}
+    </div>
+  );
+
+  return (
+    <div style={{
+      position: 'relative', zIndex: 15, borderRadius: 27, overflow: 'hidden',
+      padding: '11px 0 2px',
+      display: 'flex', flexDirection: 'column', alignItems: 'center',
+      boxShadow: dark
+        ? '0 -2px 20px rgba(0,0,0,0.09)'
+        : '0 -1px 6px rgba(0,0,0,0.018), 0 -3px 20px rgba(0,0,0,0.012)',
+    }}>
+      {/* liquid glass bg — same recipe as nav pills */}
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: 27,
+        backdropFilter: 'blur(12px) saturate(180%)',
+        WebkitBackdropFilter: 'blur(12px) saturate(180%)',
+        background: dark ? 'rgba(120,120,128,0.14)' : 'rgba(255,255,255,0.25)',
+      }} />
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: 27,
+        boxShadow: dark
+          ? 'inset 1.5px 1.5px 1px rgba(255,255,255,0.15)'
+          : 'inset 1.5px 1.5px 1px rgba(255,255,255,0.7), inset -1px -1px 1px rgba(255,255,255,0.4)',
+        border: dark ? '0.5px solid rgba(255,255,255,0.15)' : '0.5px solid rgba(0,0,0,0.06)',
+        pointerEvents: 'none',
+      }} />
+
+      {/* autocorrect bar */}
+      <div style={{
+        display: 'flex', gap: 20, alignItems: 'center',
+        padding: '8px 22px 13px', width: '100%', boxSizing: 'border-box',
+        position: 'relative',
+      }}>
+        {['"The"', 'the', 'to'].map((w, i) => (
+          <React.Fragment key={i}>
+            {i > 0 && <div style={{ width: 1, height: 25, background: '#ccc', opacity: 0.3 }} />}
+            <div style={{
+              flex: 1, textAlign: 'center',
+              fontFamily: '-apple-system, system-ui', fontSize: 17,
+              color: sugg, letterSpacing: -0.43, lineHeight: '22px',
+            }}>{w}</div>
+          </React.Fragment>
+        ))}
+      </div>
+
+      {/* key layout */}
+      <div style={{
+        display: 'flex', flexDirection: 'column', gap: 13,
+        padding: '0 6.5px', width: '100%', boxSizing: 'border-box',
+        position: 'relative',
+      }}>
+        {row(['q','w','e','r','t','y','u','i','o','p'])}
+        {row(['a','s','d','f','g','h','j','k','l'], 20)}
+        <div style={{ display: 'flex', gap: 14.25, alignItems: 'center' }}>
+          {key(icons.shift, { w: 45, k: 'shift' })}
+          <div style={{ display: 'flex', gap: 6.5, flex: 1 }}>
+            {['z','x','c','v','b','n','m'].map(l => key(l, { flex: true, k: l }))}
+          </div>
+          {key(icons.del, { w: 45, k: 'del' })}
+        </div>
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          {key('ABC', { w: 92.25, fs: 18, k: 'abc' })}
+          {key('', { flex: true, k: 'space' })}
+          {key(icons.ret, { w: 92.25, ret: true, k: 'ret' })}
+        </div>
+      </div>
+
+      {/* bottom spacer (emoji+mic area, icons omitted) */}
+      <div style={{ height: 56, width: '100%', position: 'relative' }} />
+    </div>
+  );
+}
+
+Object.assign(window, {
+  IOSDevice, IOSStatusBar, IOSNavBar, IOSGlassPill, IOSList, IOSListRow, IOSKeyboard,
+});
+
+
+})();
+</script>
+<script type="text/babel" data-presets="react">
+/* === tweaks-panel === */
+(function(){
+
+
+// tweaks-panel.jsx
+// Reusable Tweaks shell + form-control helpers.
+//
+// Owns the host protocol (listens for __activate_edit_mode / __deactivate_edit_mode,
+// posts __edit_mode_available / __edit_mode_set_keys / __edit_mode_dismissed) so
+// individual prototypes don't re-roll it. Ships a consistent set of controls so you
+// don't hand-draw <input type="range">, segmented radios, steppers, etc.
+//
+// Usage (in an HTML file that loads React + Babel):
+//
+//   const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+//     "primaryColor": "#D97757",
+//     "palette": ["#D97757", "#29261b", "#f6f4ef"],
+//     "fontSize": 16,
+//     "density": "regular",
+//     "dark": false
+//   }/*EDITMODE-END*/;
+//
+//   function App() {
+//     const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+//     return (
+//       <div style={{ fontSize: t.fontSize, color: t.primaryColor }}>
+//         Hello
+//         <TweaksPanel>
+//           <TweakSection label="Typography" />
+//           <TweakSlider label="Font size" value={t.fontSize} min={10} max={32} unit="px"
+//                        onChange={(v) => setTweak('fontSize', v)} />
+//           <TweakRadio  label="Density" value={t.density}
+//                        options={['compact', 'regular', 'comfy']}
+//                        onChange={(v) => setTweak('density', v)} />
+//           <TweakSection label="Theme" />
+//           <TweakColor  label="Primary" value={t.primaryColor}
+//                        options={['#D97757', '#2A6FDB', '#1F8A5B', '#7A5AE0']}
+//                        onChange={(v) => setTweak('primaryColor', v)} />
+//           <TweakColor  label="Palette" value={t.palette}
+//                        options={[['#D97757', '#29261b', '#f6f4ef'],
+//                                  ['#475569', '#0f172a', '#f1f5f9']]}
+//                        onChange={(v) => setTweak('palette', v)} />
+//           <TweakToggle label="Dark mode" value={t.dark}
+//                        onChange={(v) => setTweak('dark', v)} />
+//         </TweaksPanel>
+//       </div>
+//     );
+//   }
+//
+// ─────────────────────────────────────────────────────────────────────────────
+
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
+    color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+
+  .twk-field{appearance:none;width:100%;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;
+    overflow-wrap:anywhere}
+
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+
+  .twk-num{display:flex;align-items:center;height:26px;padding:0 0 0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6)}
+  .twk-num-lbl{font-weight:500;color:rgba(41,38,27,.6);cursor:ew-resize;
+    user-select:none;padding-right:8px}
+  .twk-num input{flex:1;min-width:0;height:100%;border:0;background:transparent;
+    font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:0 8px 0 0;
+    outline:none;color:inherit;-moz-appearance:textfield}
+  .twk-num input::-webkit-inner-spin-button,.twk-num input::-webkit-outer-spin-button{
+    -webkit-appearance:none;margin:0}
+  .twk-num-unit{padding-right:8px;color:rgba(41,38,27,.45)}
+
+  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;
+    background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
+  .twk-btn:hover{background:rgba(0,0,0,.88)}
+  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
+  .twk-btn.secondary:hover{background:rgba(0,0,0,.1)}
+
+  .twk-swatch{appearance:none;-webkit-appearance:none;width:56px;height:22px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:6px;padding:0;cursor:default;
+    background:transparent;flex-shrink:0}
+  .twk-swatch::-webkit-color-swatch-wrapper{padding:0}
+  .twk-swatch::-webkit-color-swatch{border:0;border-radius:5.5px}
+  .twk-swatch::-moz-color-swatch{border:0;border-radius:5.5px}
+
+  .twk-chips{display:flex;gap:6px}
+  .twk-chip{position:relative;appearance:none;flex:1;min-width:0;height:46px;
+    padding:0;border:0;border-radius:6px;overflow:hidden;cursor:default;
+    box-shadow:0 0 0 .5px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06);
+    transition:transform .12s cubic-bezier(.3,.7,.4,1),box-shadow .12s}
+  .twk-chip:hover{transform:translateY(-1px);
+    box-shadow:0 0 0 .5px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.12)}
+  .twk-chip[data-on="1"]{box-shadow:0 0 0 1.5px rgba(0,0,0,.85),
+    0 2px 6px rgba(0,0,0,.15)}
+  .twk-chip>span{position:absolute;top:0;bottom:0;right:0;width:34%;
+    display:flex;flex-direction:column;box-shadow:-1px 0 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i{flex:1;box-shadow:0 -1px 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i:first-child{box-shadow:none}
+  .twk-chip svg{position:absolute;top:6px;left:6px;width:13px;height:13px;
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+`;
+
+// ── useTweaks ───────────────────────────────────────────────────────────────
+// Single source of truth for tweak values. setTweak persists via the host
+// (__edit_mode_set_keys → host rewrites the EDITMODE block on disk).
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  // Accepts either setTweak('key', value) or setTweak({ key: value, ... }) so a
+  // useState-style call doesn't write a "[object Object]" key into the persisted
+  // JSON block.
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => ({ ...prev, ...edits }));
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+    // Same-window signal so in-page listeners (deck-stage rail thumbnails)
+    // can react — the parent message only reaches the host, not peers.
+    window.dispatchEvent(new CustomEvent('tweakchange', { detail: edits }));
+  }, []);
+  return [values, setTweak];
+}
+
+// ── TweaksPanel ─────────────────────────────────────────────────────────────
+// Floating shell. Registers the protocol listener BEFORE announcing
+// availability — if the announce ran first, the host's activate could land
+// before our handler exists and the toolbar toggle would silently no-op.
+// The close button posts __edit_mode_dismissed so the host's toolbar toggle
+// flips off in lockstep; the host echoes __deactivate_edit_mode back which
+// is what actually hides the panel.
+function TweaksPanel({ title = 'Tweaks', noDeckControls = false, children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  // Auto-inject a rail toggle when a <deck-stage> is on the page. The
+  // toggle drives the deck's per-viewer _railVisible via window message;
+  // state is mirrored from the same localStorage key the deck reads so
+  // the control reflects reality across reloads. The mechanism is the
+  // message — authors who want custom placement can post it directly
+  // and pass noDeckControls to suppress this one.
+  const hasDeckStage = React.useMemo(
+    () => typeof document !== 'undefined' && !!document.querySelector('deck-stage'),
+    [],
+  );
+  // Hide the toggle until the host has actually enabled the rail (the
+  // __omelette_rail_enabled window message, posted only when the
+  // omelette_deck_rail_enabled flag is on for this user). The initial read
+  // covers TweaksPanel mounting after the message already arrived; the
+  // listener covers the common case of mounting first.
+  const [railEnabled, setRailEnabled] = React.useState(
+    () => hasDeckStage && !!document.querySelector('deck-stage')?._railEnabled,
+  );
+  React.useEffect(() => {
+    if (!hasDeckStage || railEnabled) return undefined;
+    const onMsg = (e) => {
+      if (e.data && e.data.type === '__omelette_rail_enabled') setRailEnabled(true);
+    };
+    window.addEventListener('message', onMsg);
+    return () => window.removeEventListener('message', onMsg);
+  }, [hasDeckStage, railEnabled]);
+  const [railVisible, setRailVisible] = React.useState(() => {
+    try { return localStorage.getItem('deck-stage.railVisible') !== '0'; } catch (e) { return true; }
+  });
+  const toggleRail = (on) => {
+    setRailVisible(on);
+    window.postMessage({ type: '__deck_rail_visible', on }, '*');
+  };
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', clampToViewport);
+      return () => window.removeEventListener('resize', clampToViewport);
+    }
+    const ro = new ResizeObserver(clampToViewport);
+    ro.observe(document.documentElement);
+    return () => ro.disconnect();
+  }, [open, clampToViewport]);
+
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const dismiss = () => {
+    setOpen(false);
+    window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+  };
+
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => {
+      offsetRef.current = {
+        x: startRight - (ev.clientX - sx),
+        y: startBottom - (ev.clientY - sy),
+      };
+      clampToViewport();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel" data-noncommentable=""
+           style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" aria-label="Close tweaks"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">
+          {children}
+          {hasDeckStage && railEnabled && !noDeckControls && (
+            <TweakSection label="Deck">
+              <TweakToggle label="Thumbnail rail" value={railVisible} onChange={toggleRail} />
+            </TweakSection>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ── Layout helpers ──────────────────────────────────────────────────────────
+
+function TweakSection({ label, children }) {
+  return (
+    <>
+      <div className="twk-sect">{label}</div>
+      {children}
+    </>
+  );
+}
+
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl">
+        <span>{label}</span>
+        {value != null && <span className="twk-val">{value}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// ── Controls ────────────────────────────────────────────────────────────────
+
+function TweakSlider({ label, value, min = 0, max = 100, step = 1, unit = '', onChange }) {
+  return (
+    <TweakRow label={label} value={`${value}${unit}`}>
+      <input type="range" className="twk-slider" min={min} max={max} step={step}
+             value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </TweakRow>
+  );
+}
+
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
+              role="switch" aria-checked={!!value}
+              onClick={() => onChange(!value)}><i /></button>
+    </div>
+  );
+}
+
+function TweakRadio({ label, value, options, onChange }) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  // The active value is read by pointer-move handlers attached for the lifetime
+  // of a drag — ref it so a stale closure doesn't fire onChange for every move.
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+
+  // Segments wrap mid-word once per-segment width runs out. The track is
+  // ~248px (280 panel − 28 body pad − 4 seg pad), each button loses 12px
+  // to its own padding, and 11.5px system-ui averages ~6.3px/char — so 2
+  // options fit ~16 chars each, 3 fit ~10. Past that (or >3 options), fall
+  // back to a dropdown rather than wrap.
+  const labelLen = (o) => String(typeof o === 'object' ? o.label : o).length;
+  const maxLen = options.reduce((m, o) => Math.max(m, labelLen(o)), 0);
+  const fitsAsSegments = maxLen <= ({ 2: 16, 3: 10 }[options.length] ?? 0);
+  if (!fitsAsSegments) {
+    // <select> emits strings — map back to the original option value so the
+    // fallback stays type-preserving (numbers, booleans) like the segment path.
+    const resolve = (s) => {
+      const m = options.find((o) => String(typeof o === 'object' ? o.value : o) === s);
+      return m === undefined ? s : typeof m === 'object' ? m.value : m;
+    };
+    return <TweakSelect label={label} value={value} options={options}
+                        onChange={(s) => onChange(resolve(s))} />;
+  }
+  const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
+  const idx = Math.max(0, opts.findIndex((o) => o.value === value));
+  const n = opts.length;
+
+  const segAt = (clientX) => {
+    const r = trackRef.current.getBoundingClientRect();
+    const inner = r.width - 4;
+    const i = Math.floor(((clientX - r.left - 2) / inner) * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+
+  const onPointerDown = (e) => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = (ev) => {
+      if (!trackRef.current) return;
+      const v = segAt(ev.clientX);
+      if (v !== valueRef.current) onChange(v);
+    };
+    const up = () => {
+      setDragging(false);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  return (
+    <TweakRow label={label}>
+      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown}
+           className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
+        <div className="twk-seg-thumb"
+             style={{ left: `calc(2px + ${idx} * (100% - 4px) / ${n})`,
+                      width: `calc((100% - 4px) / ${n})` }} />
+        {opts.map((o) => (
+          <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakSelect({ label, value, options, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <select className="twk-field" value={value} onChange={(e) => onChange(e.target.value)}>
+        {options.map((o) => {
+          const v = typeof o === 'object' ? o.value : o;
+          const l = typeof o === 'object' ? o.label : o;
+          return <option key={v} value={v}>{l}</option>;
+        })}
+      </select>
+    </TweakRow>
+  );
+}
+
+function TweakText({ label, value, placeholder, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <input className="twk-field" type="text" value={value} placeholder={placeholder}
+             onChange={(e) => onChange(e.target.value)} />
+    </TweakRow>
+  );
+}
+
+function TweakNumber({ label, value, min, max, step = 1, unit = '', onChange }) {
+  const clamp = (n) => {
+    if (min != null && n < min) return min;
+    if (max != null && n > max) return max;
+    return n;
+  };
+  const startRef = React.useRef({ x: 0, val: 0 });
+  const onScrubStart = (e) => {
+    e.preventDefault();
+    startRef.current = { x: e.clientX, val: value };
+    const decimals = (String(step).split('.')[1] || '').length;
+    const move = (ev) => {
+      const dx = ev.clientX - startRef.current.x;
+      const raw = startRef.current.val + dx * step;
+      const snapped = Math.round(raw / step) * step;
+      onChange(clamp(Number(snapped.toFixed(decimals))));
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return (
+    <div className="twk-num">
+      <span className="twk-num-lbl" onPointerDown={onScrubStart}>{label}</span>
+      <input type="number" value={value} min={min} max={max} step={step}
+             onChange={(e) => onChange(clamp(Number(e.target.value)))} />
+      {unit && <span className="twk-num-unit">{unit}</span>}
+    </div>
+  );
+}
+
+// Relative-luminance contrast pick — checkmarks drawn over a swatch need to
+// read on both #111 and #fafafa without per-option configuration. Hex input
+// only (#rgb / #rrggbb); named or rgb()/hsl() colors fall through to "light".
+function __twkIsLight(hex) {
+  const h = String(hex).replace('#', '');
+  const x = h.length === 3 ? h.replace(/./g, (c) => c + c) : h.padEnd(6, '0');
+  const n = parseInt(x.slice(0, 6), 16);
+  if (Number.isNaN(n)) return true;
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return r * 299 + g * 587 + b * 114 > 148000;
+}
+
+const __TwkCheck = ({ light }) => (
+  <svg viewBox="0 0 14 14" aria-hidden="true">
+    <path d="M3 7.2 5.8 10 11 4.2" fill="none" strokeWidth="2.2"
+          strokeLinecap="round" strokeLinejoin="round"
+          stroke={light ? 'rgba(0,0,0,.78)' : '#fff'} />
+  </svg>
+);
+
+// TweakColor — curated color/palette picker. Each option is either a single
+// hex string or an array of 1-5 hex strings; the card adapts — a lone color
+// renders solid, a palette renders colors[0] as the hero (left ~2/3) with the
+// rest stacked in a sharp column on the right. onChange emits the
+// option in the shape it was passed (string stays string, array stays array).
+// Without options it falls back to the native color input for back-compat.
+function TweakColor({ label, value, options, onChange }) {
+  if (!options || !options.length) {
+    return (
+      <div className="twk-row twk-row-h">
+        <div className="twk-lbl"><span>{label}</span></div>
+        <input type="color" className="twk-swatch" value={value}
+               onChange={(e) => onChange(e.target.value)} />
+      </div>
+    );
+  }
+  // Native <input type=color> emits lowercase hex per the HTML spec, so
+  // compare case-insensitively. String() guards JSON.stringify(undefined),
+  // which returns the primitive undefined (no .toLowerCase).
+  const key = (o) => String(JSON.stringify(o)).toLowerCase();
+  const cur = key(value);
+  return (
+    <TweakRow label={label}>
+      <div className="twk-chips" role="radiogroup">
+        {options.map((o, i) => {
+          const colors = Array.isArray(o) ? o : [o];
+          const [hero, ...rest] = colors;
+          const sup = rest.slice(0, 4);
+          const on = key(o) === cur;
+          return (
+            <button key={i} type="button" className="twk-chip" role="radio"
+                    aria-checked={on} data-on={on ? '1' : '0'}
+                    aria-label={colors.join(', ')} title={colors.join(' · ')}
+                    style={{ background: hero }}
+                    onClick={() => onChange(o)}>
+              {sup.length > 0 && (
+                <span>
+                  {sup.map((c, j) => <i key={j} style={{ background: c }} />)}
+                </span>
+              )}
+              {on && <__TwkCheck light={__twkIsLight(hero)} />}
+            </button>
+          );
+        })}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakButton({ label, onClick, secondary = false }) {
+  return (
+    <button type="button" className={secondary ? 'twk-btn secondary' : 'twk-btn'}
+            onClick={onClick}>{label}</button>
+  );
+}
+
+Object.assign(window, {
+  useTweaks, TweaksPanel, TweakSection, TweakRow,
+  TweakSlider, TweakToggle, TweakRadio, TweakSelect,
+  TweakText, TweakNumber, TweakColor, TweakButton,
+});
+
+
+})();
+</script>
+<script type="text/babel" data-presets="react">
+/* === admin === */
+(function(){
+
+// Admin web panel mockup + presentation shell
+const { useState: aUseState } = React;
+
+const AT = {
+  cream: '#FAF6F2', paper: '#fff', ink: '#1A1715', text: '#2A2522',
+  muted: '#7A6E68', hairline: '#EDE7E2', coral: '#F65275',
+};
+
+function Mark({ size = 24, color = '#F65275' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 44 44" fill="none">
+      <circle cx="18" cy="18" r="13" stroke={color} strokeWidth="3"/>
+      <line x1="27" y1="27" x2="38" y2="38" stroke={color} strokeWidth="3" strokeLinecap="round"/>
+      <ellipse cx="15" cy="18" rx="2" ry="2.6" fill={color}/>
+      <ellipse cx="21" cy="18" rx="2" ry="2.6" fill={color}/>
+    </svg>
+  );
+}
+
+function Pill({ color, fg, mono, children }) {
+  return (
+    <span style={{
+      background: color, color: fg, padding: '3px 10px', borderRadius: 99,
+      fontSize: 11, fontWeight: 600, display: 'inline-flex', alignItems: 'center',
+      fontFamily: mono ? '"JetBrains Mono", monospace' : '"Manrope", system-ui',
+      letterSpacing: mono ? 0.5 : 0,
+    }}>{children}</span>
+  );
+}
+
+function AdminPanel() {
+  const [tab, setTab] = aUseState('matrix');
+  return (
+    <div style={{
+      width: '100%', height: '100%', background: AT.cream,
+      fontFamily: '"Manrope", system-ui', display: 'flex', overflow: 'hidden',
+      borderRadius: 14,
+    }}>
+      {/* Sidebar */}
+      <div style={{ width: 220, background: AT.ink, color: '#fff',
+        padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, padding: '0 8px' }}>
+          <Mark size={22} color={AT.coral}/>
+          <div style={{ fontFamily: '"Bricolage Grotesque", system-ui', fontWeight: 700, fontSize: 16 }}>
+            CENI<span style={{ color: AT.coral }}>DIAG</span> <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 10, fontFamily: '"JetBrains Mono", monospace', letterSpacing: 1 }}>ADMIN</span>
+          </div>
+        </div>
+        {[
+          { id: 'dash', l: 'Dashboard' },
+          { id: 'matrix', l: 'Matriz clínica' },
+          { id: 'users', l: 'Usuarios' },
+          { id: 'farms', l: 'Granjas' },
+          { id: 'reports', l: 'Reportes' },
+          { id: 'settings', l: 'Configuración' },
+        ].map(t => (
+          <button key={t.id} onClick={() => setTab(t.id)} style={{
+            background: tab === t.id ? 'rgba(246,82,117,0.15)' : 'transparent',
+            color: tab === t.id ? AT.coral : 'rgba(255,255,255,0.7)',
+            border: 'none', cursor: 'pointer', textAlign: 'left',
+            padding: '10px 12px', borderRadius: 10, fontSize: 13, fontWeight: 600,
+            fontFamily: '"Manrope", system-ui',
+          }}>{t.l}</button>
+        ))}
+        <div style={{ marginTop: 'auto', padding: '12px 8px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontFamily: '"JetBrains Mono", monospace' }}>EQUIPO AUTORIZADO</div>
+          <div style={{ fontSize: 12, marginTop: 2 }}>Porkcolombia</div>
+        </div>
+      </div>
+
+      {/* Main */}
+      <div style={{ flex: 1, padding: 28, overflow: 'auto' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 4 }}>
+          <div style={{ fontFamily: '"Bricolage Grotesque", system-ui', fontSize: 28, fontWeight: 700,
+            color: AT.ink, letterSpacing: -0.6 }}>Matriz clínica</div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <Pill color={AT.cream} fg={AT.muted} mono>v2.4 · 15 mar 2026</Pill>
+            <button style={{ background: AT.coral, color: '#fff', border: 'none', borderRadius: 10,
+              padding: '8px 14px', fontWeight: 700, fontSize: 13, cursor: 'pointer',
+              fontFamily: '"Manrope", system-ui' }}>+ Subir Excel</button>
+          </div>
+        </div>
+        <div style={{ color: AT.muted, fontSize: 13, marginBottom: 20 }}>
+          Versionado de la matriz que la app descarga al estar en línea
+        </div>
+
+        {/* Stats */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20 }}>
+          {[
+            { n: '23', l: 'Enfermedades' },
+            { n: '234', l: 'Síntomas' },
+            { n: '5', l: 'Categorías animal' },
+            { n: '7', l: 'Sistemas' },
+          ].map((s, i) => (
+            <div key={i} style={{ background: AT.paper, borderRadius: 14, padding: 14 }}>
+              <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+                fontSize: 28, fontWeight: 700, letterSpacing: -1, color: AT.ink, lineHeight: 1 }}>{s.n}</div>
+              <div style={{ fontSize: 11, color: AT.muted, marginTop: 4 }}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Table */}
+        <div style={{ background: AT.paper, borderRadius: 14, overflow: 'hidden' }}>
+          <div style={{ padding: '10px 16px', borderBottom: `1px solid ${AT.hairline}`,
+            display: 'grid', gridTemplateColumns: '40px 1fr 1fr 100px 100px 60px',
+            fontFamily: '"JetBrains Mono", monospace', fontSize: 10,
+            letterSpacing: 1, color: AT.muted, fontWeight: 600 }}>
+            <div>#</div><div>ENFERMEDAD</div><div>AGENTE</div><div>SISTEMA</div><div>CATEGORÍA</div><div style={{ textAlign: 'right' }}>SX</div>
+          </div>
+          {[
+            ['01', 'Pleuroneumonía (APP)', 'A. pleuropneumoniae', 'Resp', 'PRE/CEBA', 8],
+            ['02', 'Mycoplasma hyopneumoniae', 'M. hyopneumoniae', 'Resp', 'CEBA', 6],
+            ['03', 'PRRS', 'PRRSv', 'Resp/Rep', 'TODOS', 12],
+            ['04', 'Influenza porcina', 'IAV-S', 'Resp', 'TODOS', 7],
+            ['05', 'Pasteurelosis', 'P. multocida', 'Resp', 'PRE/CEBA', 5],
+            ['06', 'Diarrea neonatal', 'E. coli K88', 'Dig', 'LACT', 4],
+            ['07', 'Disentería porcina', 'B. hyodysenteriae', 'Dig', 'CEBA', 6],
+            ['08', 'Erisipela', 'E. rhusiopathiae', 'Sis', 'TODOS', 9],
+          ].map((r, i) => (
+            <div key={i} style={{ padding: '12px 16px', borderBottom: `1px solid ${AT.hairline}`,
+              display: 'grid', gridTemplateColumns: '40px 1fr 1fr 100px 100px 60px',
+              fontSize: 13, color: AT.text, alignItems: 'center' }}>
+              <div style={{ fontFamily: '"JetBrains Mono", monospace', color: AT.muted }}>{r[0]}</div>
+              <div style={{ fontWeight: 600, color: AT.ink }}>{r[1]}</div>
+              <div style={{ fontStyle: 'italic', color: AT.muted }}>{r[2]}</div>
+              <div><Pill color={AT.cream} fg={AT.muted}>{r[3]}</Pill></div>
+              <div><Pill color={AT.cream} fg={AT.muted}>{r[4]}</Pill></div>
+              <div style={{ textAlign: 'right', fontWeight: 700 }}>{r[5]}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+window.AdminPanel = AdminPanel;
+
+
+})();
+</script>
+<script type="text/babel" data-presets="react">
+/* === app === */
+(function(){
+
+// CENIDIAG — Pork Colombia mobile app prototype
+const { useState, useMemo, useEffect, useRef } = React;
+
+const T = {
+  coral: '#F65275', coralDeep: '#D93E60', coralSoft: '#FFE4EA',
+  ink: '#1A1715', text: '#2A2522', muted: '#7A6E68',
+  hairline: '#EDE7E2', cream: '#FAF6F2', paper: '#FFFFFF',
+  gray: '#666666', ok: '#2F8F5C', warn: '#C77A1C',
+};
+
+function Mark({ size = 28, color = T.coral }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" fill="none">
+      <circle cx="13" cy="13" r="9" stroke={color} strokeWidth="2.6"/>
+      <line x1="20" y1="20" x2="28" y2="28" stroke={color} strokeWidth="2.6" strokeLinecap="round"/>
+      <ellipse cx="10.5" cy="13.5" rx="1.4" ry="1.9" fill={color}/>
+      <ellipse cx="15.5" cy="13.5" rx="1.4" ry="1.9" fill={color}/>
+    </svg>
+  );
+}
+
+function Wordmark({ color = T.ink, accent = T.coral }) {
+  return (
+    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8,
+      fontFamily: '"Bricolage Grotesque", system-ui',
+      fontWeight: 700, fontSize: 22, letterSpacing: -0.5, color }}>
+      <Mark size={26} color={accent}/>
+      <span>CENI<span style={{ color: accent }}>DIAG</span></span>
+    </div>
+  );
+}
+
+function Pill({ children, color = T.coralSoft, fg = T.coralDeep, mono }) {
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6,
+      background: color, color: fg, padding: '4px 10px', borderRadius: 999,
+      fontSize: 11, fontWeight: 600, letterSpacing: 0.2,
+      textTransform: mono ? 'none' : 'uppercase',
+      fontFamily: mono ? '"JetBrains Mono", monospace' : 'inherit' }}>{children}</span>
+  );
+}
+
+function Btn({ children, onClick, variant = 'primary', full, disabled }) {
+  const base = { height: 56, padding: '0 20px', borderRadius: 16,
+    fontFamily: '"Manrope", system-ui', fontWeight: 700, fontSize: 16,
+    letterSpacing: -0.2, cursor: 'pointer', border: 'none',
+    width: full ? '100%' : 'auto',
+    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+    opacity: disabled ? 0.4 : 1 };
+  const styles = {
+    primary: { background: T.ink, color: '#fff' },
+    coral: { background: T.coral, color: '#fff' },
+    ghost: { background: 'transparent', color: T.ink, border: `1.5px solid ${T.hairline}` },
+  };
+  return <button onClick={disabled ? null : onClick} style={{ ...base, ...styles[variant] }}>{children}</button>;
+}
+
+function Field({ label, value, focused }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <label style={{ fontSize: 11, fontWeight: 600, color: T.muted,
+        textTransform: 'uppercase', letterSpacing: 0.4,
+        fontFamily: '"JetBrains Mono", monospace' }}>{label}</label>
+      <div style={{ height: 50, padding: '0 16px',
+        border: `1.5px solid ${focused ? T.coral : T.hairline}`,
+        borderRadius: 14, background: T.paper,
+        display: 'flex', alignItems: 'center',
+        fontFamily: '"Manrope", system-ui', fontSize: 15, color: T.text }}>{value}</div>
+    </div>
+  );
+}
+
+function PageHeader({ title, sub, back, onBack }) {
+  return (
+    <div style={{ padding: '8px 20px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+      {back && (
+        <button onClick={onBack} style={{ width: 40, height: 40, borderRadius: 12,
+          border: `1.5px solid ${T.hairline}`, background: T.paper, cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg width="14" height="14" viewBox="0 0 14 14"><path d="M9 2L4 7l5 5" stroke={T.ink} strokeWidth="2.2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </button>
+      )}
+      <div style={{ flex: 1 }}>
+        <div style={{ fontFamily: '"Bricolage Grotesque", system-ui', fontWeight: 700,
+          fontSize: 24, letterSpacing: -0.5, color: T.ink, lineHeight: 1.1 }}>{title}</div>
+        {sub && <div style={{ color: T.muted, fontSize: 13, marginTop: 4, fontFamily: '"Manrope", system-ui' }}>{sub}</div>}
+      </div>
+    </div>
+  );
+}
+
+function StepDots({ current, total }) {
+  return (
+    <div style={{ display: 'flex', gap: 6, padding: '0 20px 8px' }}>
+      {Array.from({ length: total }).map((_, i) => (
+        <div key={i} style={{ flex: 1, height: 4, borderRadius: 2,
+          background: i <= current ? T.coral : T.hairline }} />
+      ))}
+    </div>
+  );
+}
+
+const CATEGORIES = [
+  { id: 'lact', label: 'Lechón lactante', range: '0 – 21 días', icon: '◐' },
+  { id: 'pre', label: 'Precebo', range: '22 – 70 días', icon: '◑' },
+  { id: 'ceba', label: 'Ceba / engorde', range: '71 – 180 días', icon: '●' },
+  { id: 'hem', label: 'Hembra reproductora', range: 'Adulto', icon: '♀' },
+  { id: 'mac', label: 'Macho reproductor', range: 'Adulto', icon: '♂' },
+];
+
+const SYSTEMS = [
+  { id: 'resp', label: 'Respiratorio', count: 24, hue: '#5BA8E8' },
+  { id: 'dig', label: 'Digestivo', count: 31, hue: '#E8945B' },
+  { id: 'rep', label: 'Reproductivo', count: 18, hue: '#C95B8E' },
+  { id: 'ner', label: 'Nervioso', count: 12, hue: '#8E5BC9' },
+  { id: 'loc', label: 'Locomotor', count: 14, hue: '#5BC9A0' },
+  { id: 'piel', label: 'Piel', count: 16, hue: '#C9B05B' },
+];
+
+const SYMPTOMS_RESP = [
+  { id: 'tos', label: 'Tos seca persistente' },
+  { id: 'estornudos', label: 'Estornudos frecuentes' },
+  { id: 'disnea', label: 'Dificultad respiratoria' },
+  { id: 'secrecion', label: 'Secreción nasal' },
+  { id: 'fiebre', label: 'Fiebre (>40 °C)' },
+  { id: 'apatia', label: 'Decaimiento general' },
+  { id: 'cianosis', label: 'Cianosis en orejas' },
+];
+
+const RESULTS = [
+  { id: 'app', name: 'Pleuroneumonía (APP)', match: 87,
+    agent: 'Actinobacillus pleuropneumoniae', risk: 'Alto', riskColor: T.coral,
+    blurb: 'Compatible con cuadro respiratorio agudo en precebo. Mortalidad rápida sin tratamiento.',
+    actions: ['Aislar lote afectado', 'Notificar al MVZ a cargo', 'Toma de muestras BAL'] },
+  { id: 'mh', name: 'Mycoplasma hyopneumoniae', match: 64,
+    agent: 'M. hyopneumoniae', risk: 'Medio', riskColor: T.warn,
+    blurb: 'Tos crónica seca, baja conversión.',
+    actions: ['Revisar ventilación', 'Verificar plan vacunal', 'Confirmar por PCR'] },
+  { id: 'prrs', name: 'PRRS', match: 41,
+    agent: 'Virus PRRSv', risk: 'Medio', riskColor: T.warn,
+    blurb: 'Sintomatología compatible pero requiere correlación reproductiva.',
+    actions: ['Revisar registros reproductivos', 'Serología', 'Bioseguridad'] },
+];
+
+function Splash({ go }) {
+  return (
+    <div style={{ height: '100%', background: T.cream,
+      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between',
+      padding: '120px 24px 48px', textAlign: 'center' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <Mark size={88} color={T.coral} />
+        <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+          fontSize: 48, fontWeight: 700, letterSpacing: -1.5,
+          color: T.ink, marginTop: 28, lineHeight: 1 }}>
+          CENI<span style={{ color: T.coral }}>DIAG</span>
+        </div>
+        <div style={{ fontFamily: '"Manrope", system-ui',
+          fontSize: 17, color: T.muted, marginTop: 16, lineHeight: 1.4, maxWidth: 280 }}>
+          Apoyo al diagnóstico clínico para porcicultores en campo
+        </div>
+      </div>
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <Btn variant="coral" full onClick={() => go('onboard')}>Comenzar</Btn>
+        <button onClick={() => go('login')} style={{ background: 'none', border: 'none', cursor: 'pointer',
+          fontFamily: '"Manrope", system-ui', fontSize: 15, color: T.ink, fontWeight: 600, padding: 12 }}>Ya tengo cuenta</button>
+        <div style={{ marginTop: 8, fontSize: 11, color: T.muted, fontFamily: '"JetBrains Mono", monospace' }}>
+          v1.0 · MATRIZ CLÍNICA v2.4 · 234 SÍNTOMAS
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Onboard({ go }) {
+  const [i, setI] = useState(0);
+  const slides = [
+    { title: 'Funciona sin internet', body: 'Diseñada para zonas rurales. Toda la matriz clínica está descargada en tu dispositivo.' },
+    { title: 'Basado en evidencia', body: 'Matriz clínica validada por el equipo técnico. Lógica determinística, sin IA.' },
+    { title: 'Resultado orientativo', body: 'Te sugiere posibles enfermedades para que consultes con tu MVZ.' },
+  ];
+  const s = slides[i];
+  return (
+    <div style={{ height: '100%', background: T.paper,
+      display: 'flex', flexDirection: 'column', padding: '80px 24px 40px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 60 }}>
+        <Wordmark/>
+        <button onClick={() => go('signup')} style={{ background: 'none', border: 'none', cursor: 'pointer',
+          fontFamily: '"Manrope", system-ui', fontSize: 14, color: T.muted, fontWeight: 600 }}>Saltar</button>
+      </div>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+        <div style={{ width: 120, height: 120, borderRadius: 32, background: T.cream,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 32 }}>
+          <Mark size={64} color={T.coral}/>
+        </div>
+        <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+          fontSize: 32, fontWeight: 700, letterSpacing: -0.8,
+          color: T.ink, marginBottom: 16, lineHeight: 1.1 }}>{s.title}</div>
+        <div style={{ fontFamily: '"Manrope", system-ui',
+          fontSize: 16, color: T.muted, lineHeight: 1.5, maxWidth: 300 }}>{s.body}</div>
+      </div>
+      <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginBottom: 24 }}>
+        {slides.map((_, j) => (
+          <div key={j} style={{ width: i === j ? 24 : 6, height: 6, borderRadius: 4,
+            background: i === j ? T.coral : T.hairline, transition: 'all .25s' }}/>
+        ))}
+      </div>
+      <Btn variant="coral" full onClick={() => i < 2 ? setI(i + 1) : go('signup')}>
+        {i < 2 ? 'Siguiente' : 'Crear cuenta'}
+      </Btn>
+    </div>
+  );
+}
+
+function Signup({ go }) {
+  const fields = [
+    { label: 'NOMBRE COMPLETO', value: 'Daniel Carrera Vargas' },
+    { label: 'CÉDULA', value: '1.020.785.412' },
+    { label: 'CELULAR', value: '+57 320 420 9061' },
+    { label: 'NOMBRE DE LA GRANJA', value: 'Granja Porcícola Los Andes' },
+    { label: 'DEPARTAMENTO / MUNICIPIO', value: 'Cundinamarca · Funza' },
+    { label: 'TAMAÑO (CABEZAS)', value: '1 200 animales' },
+  ];
+  return (
+    <div style={{ height: '100%', background: T.paper, display: 'flex', flexDirection: 'column' }}>
+      <PageHeader title="Registra tu granja" sub="Estos datos alimentan la base nacional de consultas" back onBack={() => go('onboard')}/>
+      <div style={{ flex: 1, padding: '0 20px', display: 'flex', flexDirection: 'column', gap: 12, overflow: 'auto' }}>
+        {fields.map((f, i) => <Field key={i} {...f} focused={i === 4}/>)}
+        <div style={{ marginTop: 4, padding: 14, borderRadius: 14, background: T.cream,
+          display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+          <div style={{ width: 18, height: 18, borderRadius: 4, background: T.coral, flexShrink: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 1 }}>
+            <svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4l3 3 6-6" stroke="#fff" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>
+          </div>
+          <div style={{ fontSize: 12, color: T.text, lineHeight: 1.4, fontFamily: '"Manrope", system-ui' }}>
+            Acepto el tratamiento de datos según Ley 1581/2012.
+          </div>
+        </div>
+      </div>
+      <div style={{ padding: 20 }}>
+        <Btn variant="coral" full onClick={() => go('home')}>Crear cuenta</Btn>
+      </div>
+    </div>
+  );
+}
+
+function TabBar({ active, go }) {
+  const tabs = [
+    { id: 'home', label: 'Inicio', target: 'home' },
+    { id: 'history', label: 'Historial', target: 'history' },
+    { id: 'diag', label: 'Nuevo', target: 'diag1', main: true },
+    { id: 'matrix', label: 'Matriz', target: 'matrix' },
+    { id: 'profile', label: 'Perfil', target: 'profile' },
+  ];
+  return (
+    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0,
+      padding: '8px 12px 32px', background: 'rgba(255,255,255,0.92)',
+      backdropFilter: 'blur(20px)', borderTop: `1px solid ${T.hairline}`,
+      display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+      {tabs.map(t => {
+        if (t.main) {
+          return (
+            <button key={t.id} onClick={() => go(t.target)} style={{
+              width: 56, height: 56, borderRadius: 99, background: T.coral, color: '#fff',
+              border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 8px 20px rgba(246,82,117,0.35)' }}>
+              <svg width="22" height="22" viewBox="0 0 22 22"><path d="M11 4v14M4 11h14" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/></svg>
+            </button>
+          );
+        }
+        const on = active === t.id;
+        return (
+          <button key={t.id} onClick={() => go(t.target)} style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
+            color: on ? T.ink : T.muted, padding: 8,
+            fontFamily: '"Manrope", system-ui', fontSize: 11, fontWeight: on ? 700 : 500 }}>
+            <div style={{ width: 6, height: 6, borderRadius: 99, background: on ? T.coral : 'transparent' }}/>
+            {t.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function Stat({ n, l, badge }) {
+  return (
+    <div style={{ background: T.paper, borderRadius: 18, padding: 16,
+      display: 'flex', flexDirection: 'column', position: 'relative' }}>
+      <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+        fontSize: 32, fontWeight: 700, color: T.ink, lineHeight: 1, letterSpacing: -1 }}>{n}</div>
+      <div style={{ fontSize: 12, color: T.muted, marginTop: 6, fontFamily: '"Manrope", system-ui' }}>{l}</div>
+      {badge && <div style={{ position: 'absolute', top: 14, right: 14, width: 8, height: 8, borderRadius: 99, background: T.coral }}/>}
+    </div>
+  );
+}
+
+function Home({ go }) {
+  return (
+    <div style={{ height: '100%', background: T.cream, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ padding: '60px 20px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Wordmark/>
+        <div onClick={() => go('profile')} style={{ width: 38, height: 38, borderRadius: 99,
+          background: T.ink, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: '"Bricolage Grotesque", system-ui', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}>DC</div>
+      </div>
+      <div style={{ flex: 1, overflow: 'auto', padding: '8px 20px 100px' }}>
+        <div style={{ fontFamily: '"Bricolage Grotesque", system-ui', fontWeight: 700,
+          fontSize: 28, lineHeight: 1.15, letterSpacing: -0.6, color: T.ink }}>
+          Buenas tardes, Daniel.
+        </div>
+        <div style={{ color: T.muted, fontSize: 14, marginTop: 4, fontFamily: '"Manrope", system-ui' }}>
+          Granja Los Andes · Funza, Cundinamarca
+        </div>
+        <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
+          <Pill color="#E7F4EC" fg={T.ok}>● SIN CONEXIÓN</Pill>
+          <Pill color={T.cream} fg={T.muted} mono>MATRIZ v2.4</Pill>
+        </div>
+        <button onClick={() => go('diag1')} style={{
+          marginTop: 20, width: '100%', textAlign: 'left',
+          background: T.ink, color: '#fff', border: 'none', cursor: 'pointer',
+          padding: 24, borderRadius: 24, position: 'relative', overflow: 'hidden',
+          display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ position: 'absolute', right: -30, top: -30, opacity: 0.12 }}>
+            <Mark size={180} color="#fff"/>
+          </div>
+          <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+            letterSpacing: 1, color: T.coral, fontWeight: 600 }}>NUEVO DIAGNÓSTICO</div>
+          <div style={{ fontFamily: '"Bricolage Grotesque", system-ui', fontSize: 26,
+            fontWeight: 700, letterSpacing: -0.6, lineHeight: 1.1, maxWidth: 240 }}>¿Qué le pasa a tu animal?</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4,
+            fontSize: 13, color: 'rgba(255,255,255,0.7)', fontFamily: '"Manrope", system-ui' }}>
+            Toma 2 minutos. Funciona sin señal.
+            <svg width="14" height="14" viewBox="0 0 14 14" style={{ marginLeft: 'auto' }}><path d="M2 7h10m0 0L7 2m5 5l-5 5" stroke="#fff" strokeWidth="2" strokeLinecap="round" fill="none"/></svg>
+          </div>
+        </button>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginTop: 12 }}>
+          <Stat n="14" l="Consultas este mes" />
+          <Stat n="3" l="Pendientes de envío" badge/>
+        </div>
+        <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+          letterSpacing: 0.8, color: T.muted, marginTop: 24, marginBottom: 8, fontWeight: 600 }}>CONSULTAS RECIENTES</div>
+        <div style={{ background: T.paper, borderRadius: 18, overflow: 'hidden' }}>
+          {[
+            { d: 'Hoy · 14:32', t: 'Lote 14 — Precebo', dx: 'Sospecha APP', risk: 'Alto', riskC: T.coral, sync: false },
+            { d: 'Ayer · 09:15', t: 'Lote 09 — Ceba', dx: 'Mycoplasma hyo.', risk: 'Medio', riskC: T.warn, sync: false },
+            { d: '03 May · 16:40', t: 'Galpón 3 — Lechones', dx: 'Diarrea neonatal', risk: 'Medio', riskC: T.warn, sync: true },
+          ].map((r, i, arr) => (
+            <div key={i} onClick={() => go('result')} style={{
+              padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer',
+              borderBottom: i < arr.length - 1 ? `1px solid ${T.hairline}` : 'none' }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 11, color: T.muted, fontFamily: '"JetBrains Mono", monospace', letterSpacing: 0.3 }}>{r.d}</div>
+                <div style={{ fontFamily: '"Manrope", system-ui', fontSize: 15, fontWeight: 600, color: T.ink, marginTop: 2 }}>{r.t}</div>
+                <div style={{ fontSize: 13, color: T.muted, fontFamily: '"Manrope", system-ui', marginTop: 2 }}>{r.dx}</div>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
+                <Pill color={`${r.riskC}1A`} fg={r.riskC}>{r.risk}</Pill>
+                {!r.sync && <span style={{ fontSize: 10, color: T.muted, fontFamily: '"JetBrains Mono", monospace' }}>↑ pend.</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <TabBar active="home" go={go}/>
+    </div>
+  );
+}
+
+function Diag1({ go, state, set }) {
+  return (
+    <div style={{ height: '100%', background: T.paper, display: 'flex', flexDirection: 'column' }}>
+      <PageHeader title="Categoría animal" sub="Paso 1 de 3" back onBack={() => go('home')}/>
+      <StepDots current={0} total={3}/>
+      <div style={{ flex: 1, padding: '12px 20px', display: 'flex', flexDirection: 'column', gap: 10, overflow: 'auto' }}>
+        {CATEGORIES.map(c => {
+          const sel = state.cat === c.id;
+          return (
+            <button key={c.id} onClick={() => set({ cat: c.id })} style={{
+              padding: 18, borderRadius: 18, cursor: 'pointer',
+              border: `2px solid ${sel ? T.coral : T.hairline}`,
+              background: sel ? T.coralSoft : T.paper,
+              display: 'flex', alignItems: 'center', gap: 14, textAlign: 'left' }}>
+              <div style={{ width: 44, height: 44, borderRadius: 12,
+                background: sel ? T.coral : T.cream, color: sel ? '#fff' : T.ink,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 22, fontFamily: '"Bricolage Grotesque", system-ui' }}>{c.icon}</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: '"Manrope", system-ui', fontWeight: 700, fontSize: 16, color: T.ink }}>{c.label}</div>
+                <div style={{ fontSize: 12, color: T.muted, fontFamily: '"JetBrains Mono", monospace', marginTop: 2 }}>{c.range}</div>
+              </div>
+              {sel && (
+                <div style={{ width: 24, height: 24, borderRadius: 99, background: T.coral, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <svg width="12" height="10" viewBox="0 0 12 10"><path d="M1 5l3 3 7-7" stroke="#fff" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>
+                </div>
+              )}
+            </button>
+          );
+        })}
+      </div>
+      <div style={{ padding: 20 }}>
+        <Btn variant="coral" full disabled={!state.cat} onClick={() => go('diag2')}>Continuar</Btn>
+      </div>
+    </div>
+  );
+}
+
+function Diag2({ go, state, set }) {
+  const toggle = (id) => {
+    const next = state.systems.includes(id)
+      ? state.systems.filter(x => x !== id) : [...state.systems, id];
+    set({ systems: next });
+  };
+  return (
+    <div style={{ height: '100%', background: T.paper, display: 'flex', flexDirection: 'column' }}>
+      <PageHeader title="Sistema afectado" sub="Selecciona uno o varios" back onBack={() => go('diag1')}/>
+      <StepDots current={1} total={3}/>
+      <div style={{ flex: 1, padding: '12px 20px', overflow: 'auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          {SYSTEMS.map(s => {
+            const sel = state.systems.includes(s.id);
+            return (
+              <button key={s.id} onClick={() => toggle(s.id)} style={{
+                padding: 16, borderRadius: 18, cursor: 'pointer',
+                border: `2px solid ${sel ? T.coral : T.hairline}`,
+                background: sel ? T.coralSoft : T.paper,
+                display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 10,
+                aspectRatio: '1 / 0.95', textAlign: 'left' }}>
+                <div style={{ width: 32, height: 32, borderRadius: 10, background: s.hue }}/>
+                <div style={{ fontFamily: '"Manrope", system-ui', fontWeight: 700, fontSize: 15, color: T.ink, lineHeight: 1.1 }}>{s.label}</div>
+                <div style={{ fontSize: 11, color: T.muted, fontFamily: '"JetBrains Mono", monospace', marginTop: 'auto' }}>{s.count} síntomas</div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <div style={{ padding: 20 }}>
+        <Btn variant="coral" full disabled={!state.systems.length} onClick={() => go('diag3')}>
+          Continuar {state.systems.length > 0 && `(${state.systems.length})`}
+        </Btn>
+      </div>
+    </div>
+  );
+}
+
+function Diag3({ go, state, set }) {
+  const list = SYMPTOMS_RESP;
+  const toggle = (id) => {
+    const next = state.symptoms.includes(id)
+      ? state.symptoms.filter(x => x !== id) : [...state.symptoms, id];
+    set({ symptoms: next });
+  };
+  return (
+    <div style={{ height: '100%', background: T.paper, display: 'flex', flexDirection: 'column' }}>
+      <PageHeader title="Síntomas observados" sub="Marca todo lo que aplique" back onBack={() => go('diag2')}/>
+      <StepDots current={2} total={3}/>
+      <div style={{ flex: 1, padding: '8px 20px', overflow: 'auto' }}>
+        <div style={{ background: T.cream, borderRadius: 14, padding: 12, marginBottom: 14, display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div style={{ width: 32, height: 32, borderRadius: 10, background: '#5BA8E8' }}/>
+          <div style={{ fontFamily: '"Manrope", system-ui', fontSize: 13, color: T.text, lineHeight: 1.3 }}>
+            <strong>Sistema respiratorio</strong> · {list.length} síntomas disponibles
+          </div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {list.map(s => {
+            const sel = state.symptoms.includes(s.id);
+            return (
+              <button key={s.id} onClick={() => toggle(s.id)} style={{
+                padding: '14px 16px', borderRadius: 14, cursor: 'pointer',
+                border: `1.5px solid ${sel ? T.coral : T.hairline}`,
+                background: sel ? T.coralSoft : T.paper,
+                display: 'flex', alignItems: 'center', gap: 12, textAlign: 'left' }}>
+                <div style={{ width: 22, height: 22, borderRadius: 6,
+                  border: `2px solid ${sel ? T.coral : T.hairline}`,
+                  background: sel ? T.coral : T.paper,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {sel && <svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4l3 3 6-6" stroke="#fff" strokeWidth="2" fill="none" strokeLinecap="round"/></svg>}
+                </div>
+                <div style={{ flex: 1, fontFamily: '"Manrope", system-ui', fontSize: 15, color: T.ink, fontWeight: sel ? 600 : 500 }}>{s.label}</div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <div style={{ padding: 20 }}>
+        <Btn variant="coral" full disabled={!state.symptoms.length} onClick={() => go('result')}>
+          Analizar matriz {state.symptoms.length > 0 && `· ${state.symptoms.length}`}
+        </Btn>
+      </div>
+    </div>
+  );
+}
+
+function ResultCard({ r, primary }) {
+  return (
+    <div style={{ background: primary ? T.ink : T.paper, color: primary ? '#fff' : T.ink,
+      borderRadius: 22, padding: primary ? 22 : 18, marginBottom: 10,
+      border: primary ? 'none' : `1px solid ${T.hairline}` }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12 }}>
+        <div style={{ flex: 1 }}>
+          <Pill color={primary ? 'rgba(255,255,255,0.12)' : `${r.riskColor}1A`} fg={primary ? '#fff' : r.riskColor}>
+            RIESGO {r.risk.toUpperCase()}
+          </Pill>
+          <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+            fontSize: primary ? 24 : 18, fontWeight: 700, letterSpacing: -0.5,
+            marginTop: 10, lineHeight: 1.1 }}>{r.name}</div>
+          <div style={{ fontSize: 12, fontFamily: '"JetBrains Mono", monospace',
+            color: primary ? 'rgba(255,255,255,0.6)' : T.muted, marginTop: 4, fontStyle: 'italic' }}>{r.agent}</div>
+        </div>
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+            fontSize: primary ? 44 : 32, fontWeight: 700, letterSpacing: -1.5, lineHeight: 1,
+            color: primary ? T.coral : T.ink }}>{r.match}<span style={{ fontSize: 16, fontWeight: 500, color: primary ? 'rgba(255,255,255,0.5)' : T.muted }}>%</span></div>
+          <div style={{ fontSize: 10, color: primary ? 'rgba(255,255,255,0.5)' : T.muted, fontFamily: '"JetBrains Mono", monospace', marginTop: 2 }}>match</div>
+        </div>
+      </div>
+      <div style={{ height: 6, borderRadius: 99, background: primary ? 'rgba(255,255,255,0.1)' : T.hairline,
+        marginTop: 14, overflow: 'hidden' }}>
+        <div style={{ height: '100%', width: `${r.match}%`, background: T.coral, borderRadius: 99 }}/>
+      </div>
+      {primary && (
+        <>
+          <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', marginTop: 14, lineHeight: 1.5, fontFamily: '"Manrope", system-ui' }}>{r.blurb}</div>
+          <div style={{ marginTop: 16, padding: 14, borderRadius: 14, background: 'rgba(255,255,255,0.06)' }}>
+            <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, letterSpacing: 1, color: T.coral, fontWeight: 600 }}>ACCIONES SUGERIDAS</div>
+            <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {r.actions.map((a, i) => (
+                <div key={i} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', fontSize: 13, fontFamily: '"Manrope", system-ui' }}>
+                  <span style={{ color: T.coral, fontFamily: '"JetBrains Mono", monospace', fontWeight: 700 }}>{String(i + 1).padStart(2, '0')}</span>
+                  <span style={{ color: 'rgba(255,255,255,0.92)' }}>{a}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function Result({ go }) {
+  return (
+    <div style={{ height: '100%', background: T.cream, display: 'flex', flexDirection: 'column' }}>
+      <PageHeader title="Resultado orientativo" sub="Matriz clínica v2.4" back onBack={() => go('home')}/>
+      <div style={{ flex: 1, overflow: 'auto', padding: '0 20px 110px' }}>
+        <div style={{ padding: 14, borderRadius: 14, background: '#FFF3D6', display: 'flex', gap: 10,
+          alignItems: 'flex-start', marginBottom: 16 }}>
+          <div style={{ width: 22, height: 22, borderRadius: 99, background: T.warn, color: '#fff',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            fontFamily: '"Bricolage Grotesque", system-ui', fontWeight: 700, fontSize: 14 }}>!</div>
+          <div style={{ fontSize: 12, color: T.text, lineHeight: 1.4, fontFamily: '"Manrope", system-ui' }}>
+            Resultado <strong>orientativo</strong>. No reemplaza la valoración del MVZ.
+          </div>
+        </div>
+        <ResultCard r={RESULTS[0]} primary/>
+        <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+          letterSpacing: 0.8, color: T.muted, margin: '20px 0 8px', fontWeight: 600 }}>OTRAS COINCIDENCIAS</div>
+        {RESULTS.slice(1).map(r => <ResultCard key={r.id} r={r}/>)}
+      </div>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '12px 20px 32px',
+        background: 'linear-gradient(to top, rgba(250,246,242,1) 60%, rgba(250,246,242,0))',
+        display: 'flex', gap: 10 }}>
+        <Btn variant="ghost" onClick={() => go('home')}>Guardar</Btn>
+        <Btn variant="coral" full onClick={() => go('home')}>Compartir con MVZ</Btn>
+      </div>
+    </div>
+  );
+}
+
+function History({ go }) {
+  const items = [
+    { d: 'HOY', t: '14:32', lote: 'Lote 14 — Precebo (45d)', dx: 'Pleuroneumonía (APP)', m: 87, riskC: T.coral, sync: false },
+    { d: 'HOY', t: '11:08', lote: 'Lote 14 — Precebo (45d)', dx: 'Sin coincidencias', m: 0, riskC: T.muted, sync: false },
+    { d: 'AYER', t: '09:15', lote: 'Lote 09 — Ceba (110d)', dx: 'Mycoplasma hyopneumoniae', m: 64, riskC: T.warn, sync: false },
+    { d: '03 MAY', t: '16:40', lote: 'Galpón 3 — Lechones (12d)', dx: 'Diarrea neonatal', m: 71, riskC: T.warn, sync: true },
+    { d: '01 MAY', t: '08:22', lote: 'Lote 08 — Ceba (130d)', dx: 'Erisipela porcina', m: 58, riskC: T.warn, sync: true },
+    { d: '28 ABR', t: '17:01', lote: 'Hembras G2', dx: 'PRRS', m: 62, riskC: T.warn, sync: true },
+  ];
+  return (
+    <div style={{ height: '100%', background: T.paper, display: 'flex', flexDirection: 'column' }}>
+      <PageHeader title="Historial" sub="Tus consultas en este dispositivo"/>
+      <div style={{ padding: '0 20px 12px', display: 'flex', gap: 8 }}>
+        <Pill color={T.ink} fg="#fff">TODAS · 47</Pill>
+        <Pill>PENDIENTES · 3</Pill>
+      </div>
+      <div style={{ flex: 1, overflow: 'auto', padding: '0 20px 100px' }}>
+        {items.map((it, i, arr) => {
+          const showHeader = i === 0 || arr[i - 1].d !== it.d;
+          return (
+            <React.Fragment key={i}>
+              {showHeader && (
+                <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+                  letterSpacing: 0.8, color: T.muted, marginTop: i === 0 ? 4 : 18,
+                  marginBottom: 8, fontWeight: 600 }}>— {it.d}</div>
+              )}
+              <button onClick={() => go('result')} style={{
+                width: '100%', background: T.paper, border: `1px solid ${T.hairline}`,
+                borderRadius: 14, padding: 14, marginBottom: 8, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: 12, textAlign: 'left' }}>
+                <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 12, color: T.muted, width: 42 }}>{it.t}</div>
+                <div style={{ width: 1, height: 36, background: T.hairline }}/>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: '"Manrope", system-ui', fontSize: 14, fontWeight: 600, color: T.ink }}>{it.dx}</div>
+                  <div style={{ fontSize: 12, color: T.muted, marginTop: 2 }}>{it.lote}</div>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+                  {it.m > 0 ? (
+                    <div style={{ fontFamily: '"Bricolage Grotesque", system-ui', fontWeight: 700, fontSize: 18, color: it.riskC }}>{it.m}%</div>
+                  ) : (
+                    <div style={{ fontSize: 11, color: T.muted, fontFamily: '"JetBrains Mono", monospace' }}>—</div>
+                  )}
+                  {!it.sync && <div style={{ width: 6, height: 6, borderRadius: 99, background: T.coral }}/>}
+                </div>
+              </button>
+            </React.Fragment>
+          );
+        })}
+      </div>
+      <TabBar active="history" go={go}/>
+    </div>
+  );
+}
+
+function Row({ k, v }) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+      <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10, letterSpacing: 1, color: 'rgba(255,255,255,0.5)' }}>{k}</div>
+      <div style={{ fontFamily: '"Manrope", system-ui', fontSize: 14, fontWeight: 600 }}>{v}</div>
+    </div>
+  );
+}
+function SectionLabel({ children }) {
+  return <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+    letterSpacing: 0.8, color: T.muted, marginTop: 22, marginBottom: 8, fontWeight: 600 }}>{children}</div>;
+}
+function ProfRow({ t, sub, right, last }) {
+  return (
+    <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12,
+      borderBottom: last ? 'none' : `1px solid ${T.hairline}` }}>
+      <div style={{ flex: 1 }}>
+        <div style={{ fontFamily: '"Manrope", system-ui', fontSize: 15, fontWeight: 600, color: T.ink }}>{t}</div>
+        {sub && <div style={{ fontSize: 12, color: T.muted, marginTop: 2 }}>{sub}</div>}
+      </div>
+      {right || <svg width="8" height="14" viewBox="0 0 8 14"><path d="M1 1l6 6-6 6" stroke={T.muted} strokeWidth="2" fill="none" strokeLinecap="round"/></svg>}
+    </div>
+  );
+}
+
+function Profile({ go }) {
+  return (
+    <div style={{ height: '100%', background: T.cream, display: 'flex', flexDirection: 'column' }}>
+      <PageHeader title="Mi cuenta" back onBack={() => go('home')}/>
+      <div style={{ flex: 1, overflow: 'auto', padding: '0 20px 100px' }}>
+        <div style={{ background: T.ink, borderRadius: 22, padding: 20, color: '#fff',
+          display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{ width: 56, height: 56, borderRadius: 99, background: T.coral, color: '#fff',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontFamily: '"Bricolage Grotesque", system-ui', fontWeight: 700, fontSize: 22 }}>DC</div>
+            <div>
+              <div style={{ fontFamily: '"Bricolage Grotesque", system-ui', fontWeight: 700, fontSize: 20 }}>Daniel Carrera</div>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', marginTop: 2 }}>Encargado técnico</div>
+            </div>
+          </div>
+          <div style={{ height: 1, background: 'rgba(255,255,255,0.08)' }}/>
+          <Row k="GRANJA" v="Los Andes"/>
+          <Row k="UBICACIÓN" v="Funza, Cundinamarca"/>
+          <Row k="TAMAÑO" v="1 200 cabezas"/>
+        </div>
+        <SectionLabel>SINCRONIZACIÓN</SectionLabel>
+        <div style={{ background: T.paper, borderRadius: 18, overflow: 'hidden' }}>
+          <ProfRow t="Subir consultas pendientes" sub="3 consultas sin enviar" right={<Pill>3</Pill>}/>
+          <ProfRow t="Última sincronización" sub="Hoy · 11:42" right={<span style={{ fontSize: 12, color: T.ok, fontFamily: '"JetBrains Mono", monospace' }}>OK</span>}/>
+          <ProfRow t="Matriz clínica" sub="v2.4 · 15 mar 2026" last/>
+        </div>
+        <SectionLabel>SOPORTE</SectionLabel>
+        <div style={{ background: T.paper, borderRadius: 18, overflow: 'hidden' }}>
+          <ProfRow t="Manual del usuario"/>
+          <ProfRow t="Contactar soporte"/>
+          <ProfRow t="Términos y privacidad" last/>
+        </div>
+      </div>
+      <TabBar active="profile" go={go}/>
+    </div>
+  );
+}
+
+function Matrix({ go }) {
+  const rows = [
+    { c: '01', name: 'Pleuroneumonía (APP)', agent: 'A. pleuropneumoniae', sys: 'Resp', cat: 'PRE/CEBA', sx: 8 },
+    { c: '02', name: 'Mycoplasma hyo.', agent: 'M. hyopneumoniae', sys: 'Resp', cat: 'CEBA', sx: 6 },
+    { c: '03', name: 'PRRS', agent: 'PRRSv', sys: 'Resp/Rep', cat: 'TODOS', sx: 12 },
+    { c: '04', name: 'Influenza porcina', agent: 'IAV-S', sys: 'Resp', cat: 'TODOS', sx: 7 },
+    { c: '05', name: 'Pasteurelosis', agent: 'P. multocida', sys: 'Resp', cat: 'PRE/CEBA', sx: 5 },
+    { c: '06', name: 'Diarrea neonatal', agent: 'E. coli K88', sys: 'Dig', cat: 'LACT', sx: 4 },
+    { c: '07', name: 'Disentería', agent: 'B. hyodysenteriae', sys: 'Dig', cat: 'CEBA', sx: 6 },
+    { c: '08', name: 'Erisipela', agent: 'E. rhusiopathiae', sys: 'Sis', cat: 'TODOS', sx: 9 },
+    { c: '09', name: 'Circovirus PCV2', agent: 'PCV2', sys: 'Sis', cat: 'PRE/CEBA', sx: 11 },
+  ];
+  return (
+    <div style={{ height: '100%', background: T.paper, display: 'flex', flexDirection: 'column' }}>
+      <PageHeader title="Matriz clínica" sub="v2.4 — 23 enfermedades · 234 síntomas"/>
+      <div style={{ padding: '0 20px 12px', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        <Pill color={T.ink} fg="#fff">TODAS</Pill>
+        <Pill>RESPIRATORIO</Pill>
+        <Pill>DIGESTIVO</Pill>
+      </div>
+      <div style={{ flex: 1, overflow: 'auto', padding: '0 20px 100px' }}>
+        {rows.map((r, i) => (
+          <div key={i} style={{ padding: 14, borderBottom: `1px solid ${T.hairline}`,
+            display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11, color: T.muted, width: 24 }}>{r.c}</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontFamily: '"Manrope", system-ui', fontSize: 15, fontWeight: 600, color: T.ink }}>{r.name}</div>
+              <div style={{ fontSize: 11, color: T.muted, fontStyle: 'italic', fontFamily: '"Manrope", system-ui', marginTop: 2 }}>{r.agent}</div>
+              <div style={{ display: 'flex', gap: 4, marginTop: 6 }}>
+                <Pill color={T.cream} fg={T.muted}>{r.sys}</Pill>
+                <Pill color={T.cream} fg={T.muted}>{r.cat}</Pill>
+              </div>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontFamily: '"Bricolage Grotesque", system-ui', fontSize: 18, fontWeight: 700, color: T.ink }}>{r.sx}</div>
+              <div style={{ fontSize: 9, color: T.muted, fontFamily: '"JetBrains Mono", monospace' }}>SÍNT.</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <TabBar active="matrix" go={go}/>
+    </div>
+  );
+}
+
+const SCREENS = {
+  splash: Splash, onboard: Onboard, signup: Signup, login: Signup,
+  home: Home, diag1: Diag1, diag2: Diag2, diag3: Diag3,
+  result: Result, history: History, profile: Profile, matrix: Matrix,
+};
+
+function PhoneApp({ initial = 'splash' }) {
+  const [screen, setScreen] = useState(initial);
+  const [state, setStateRaw] = useState({ cat: null, systems: [], symptoms: [] });
+  const set = (patch) => setStateRaw(s => ({ ...s, ...patch }));
+  const Comp = SCREENS[screen] || Splash;
+  return <Comp go={setScreen} state={state} set={set}/>;
+}
+
+Object.assign(window, { PhoneApp, T, Mark, Wordmark, SCREENS });
+
+
+})();
+</script>
+<script type="text/babel" data-presets="react">
+/* === main === */
+(function(){
+
+
+console.log('[main.jsx] start');
+const { useState, useRef, useEffect } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "primaryColor": "#F65275",
+  "showAdmin": true,
+  "view": "phone"
+}/*EDITMODE-END*/;
+
+const SCREEN_LIST = [
+  { id: 'splash',  label: '01 · Splash' },
+  { id: 'onboard', label: '02 · Onboarding' },
+  { id: 'signup',  label: '03 · Registro' },
+  { id: 'home',    label: '04 · Inicio' },
+  { id: 'diag1',   label: '05 · Categoría' },
+  { id: 'diag2',   label: '06 · Sistema' },
+  { id: 'diag3',   label: '07 · Síntomas' },
+  { id: 'result',  label: '08 · Resultado' },
+  { id: 'history', label: '09 · Historial' },
+  { id: 'matrix',  label: '10 · Matriz' },
+  { id: 'profile', label: '11 · Perfil' },
+];
+
+function Cover() {
+  return (
+    <header style={{
+      maxWidth: 1280, margin: '0 auto', padding: '64px 40px 32px',
+      position: 'relative', zIndex: 2,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40, flexWrap: 'wrap' }}>
+        <div style={{ flex: '1 1 600px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 12,
+            background: '#fff', padding: '8px 14px', borderRadius: 999,
+            border: '1px solid #EDE7E2',
+            fontFamily: '"JetBrains Mono", monospace', fontSize: 11, fontWeight: 600,
+            color: '#7A6E68', letterSpacing: 1, marginBottom: 28 }}>
+            <span style={{ width: 8, height: 8, borderRadius: 99, background: '#F65275' }}/>
+            PROPUESTA · 08 MAY 2026 · PORKCOLOMBIA × CARRERA
+          </div>
+          <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+            fontSize: 'clamp(48px, 7vw, 96px)', fontWeight: 700, letterSpacing: -3,
+            lineHeight: 0.92, color: '#1A1715' }}>
+            Diagnóstico clínico<br/>
+            <span style={{ color: '#F65275' }}>en el bolsillo</span> de cada<br/>
+            porcicultor de Colombia.
+          </div>
+          <div style={{ marginTop: 24, fontSize: 18, color: '#7A6E68', maxWidth: 620, lineHeight: 1.5 }}>
+            <strong style={{ color: '#1A1715' }}>CENIDIAG</strong> es la app móvil que convierte una matriz clínica veterinaria en una herramienta de campo: funciona <strong style={{ color: '#1A1715' }}>sin internet</strong>, registra cada granja en una <strong style={{ color: '#1A1715' }}>base de datos nacional</strong> y entrega un diagnóstico <strong style={{ color: '#1A1715' }}>orientativo</strong> en menos de 2 minutos.
+          </div>
+        </div>
+        <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', gap: 10, minWidth: 280 }}>
+          {[
+            { k: 'Para', v: 'Equipo Porkcolombia', sub: '' },
+            { k: 'Proyecto', v: 'Tecnología móvil para diagnóstico veterinario', sub: 'Porkcolombia' },
+            { k: 'Referencia', v: 'E-diagnóstico 3tres3', sub: 'Mejorada para campo colombiano' },
+          ].map((c, i) => (
+            <div key={i} style={{ background: '#fff', border: '1px solid #EDE7E2', borderRadius: 14, padding: 14 }}>
+              <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10,
+                letterSpacing: 1, color: '#7A6E68', fontWeight: 600 }}>{c.k.toUpperCase()}</div>
+              <div style={{ fontWeight: 700, fontSize: 14, color: '#1A1715', marginTop: 4 }}>{c.v}</div>
+              <div style={{ fontSize: 12, color: '#7A6E68', marginTop: 2 }}>{c.sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Pillars */}
+      <div style={{ marginTop: 56, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+        {[
+          { n: '01', t: 'Offline-first', b: 'Toda la matriz vive en el dispositivo. Funciona en zonas sin señal.' },
+          { n: '02', t: 'Matriz determinística', b: 'Lógica estricta basada en una matriz clínica validada por el equipo técnico. Sin IA.' },
+          { n: '03', t: 'Base de datos nacional', b: 'Registro consolidado de granjas, lotes y consultas.' },
+          { n: '04', t: 'Panel administrativo', b: 'El equipo autorizado actualiza la matriz desde la web. Versionado automático.' },
+          { n: '05', t: 'Multiplataforma', b: 'iOS + Android desde un solo código. Publicación en ambas tiendas.' },
+        ].map((p, i) => (
+          <div key={i} style={{ background: '#fff', border: '1px solid #EDE7E2', borderRadius: 18, padding: 20 }}>
+            <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+              letterSpacing: 1.5, color: '#F65275', fontWeight: 700 }}>{p.n}</div>
+            <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+              fontSize: 19, fontWeight: 700, letterSpacing: -0.4, color: '#1A1715', marginTop: 12, lineHeight: 1.15 }}>{p.t}</div>
+            <div style={{ fontSize: 13, color: '#7A6E68', marginTop: 8, lineHeight: 1.5 }}>{p.b}</div>
+          </div>
+        ))}
+      </div>
+    </header>
+  );
+}
+
+function PhoneStage({ initial }) {
+  return (
+    <div style={{
+      display: 'flex', justifyContent: 'center', alignItems: 'center',
+      padding: '12px 0',
+    }}>
+      <div style={{ position: 'relative' }}>
+        <IOSDevice width={402} height={874}>
+          <PhoneApp initial={initial}/>
+        </IOSDevice>
+      </div>
+    </div>
+  );
+}
+
+function ScreenLabel({ children }) {
+  return (
+    <div style={{
+      fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+      letterSpacing: 1.5, color: '#7A6E68', fontWeight: 600,
+      marginBottom: 12, textAlign: 'center',
+    }}>{children}</div>
+  );
+}
+
+function CanvasView() {
+  return (
+    <div style={{
+      maxWidth: 1280, margin: '0 auto', padding: '20px 40px 40px',
+      position: 'relative', zIndex: 2,
+    }}>
+      <SectionTitle eyebrow="11 PANTALLAS" title="Recorrido completo del usuario">
+        Desde el primer registro de la granja hasta el resultado orientativo y el historial sincronizado.
+      </SectionTitle>
+      <div style={{
+        display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: 36, marginTop: 32,
+      }}>
+        {SCREEN_LIST.map(s => (
+          <div key={s.id}>
+            <ScreenLabel>{s.label}</ScreenLabel>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div style={{ transform: 'scale(0.7)', transformOrigin: 'top center', marginBottom: -260 }}>
+                <IOSDevice width={402} height={874}>
+                  <PhoneApp initial={s.id}/>
+                </IOSDevice>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SectionTitle({ eyebrow, title, children }) {
+  return (
+    <div style={{ maxWidth: 720 }}>
+      <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+        letterSpacing: 1.5, color: '#F65275', fontWeight: 700 }}>{eyebrow}</div>
+      <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+        fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 700, letterSpacing: -1.2,
+        color: '#1A1715', marginTop: 12, lineHeight: 1.05 }}>{title}</div>
+      {children && <div style={{ fontSize: 17, color: '#7A6E68', marginTop: 14, lineHeight: 1.5 }}>{children}</div>}
+    </div>
+  );
+}
+
+function PrototypeSection() {
+  const [initial, setInitial] = useState('splash');
+  return (
+    <section style={{ position: 'relative', zIndex: 2, padding: '40px 0 80px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
+        <SectionTitle eyebrow="PROTOTIPO INTERACTIVO" title="Tócalo. Funciona.">
+          Esto no es un mockup. Es un prototipo navegable: empieza por el splash, registra una granja, completa un diagnóstico de tos respiratoria en un lote de precebos y revisa la matriz coincidente.
+        </SectionTitle>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr 300px',
+        gap: 24, alignItems: 'start', maxWidth: 1280, margin: '32px auto 0', padding: '0 40px' }}>
+        {/* Left: jump-to nav */}
+        <div style={{ background: '#fff', border: '1px solid #EDE7E2', borderRadius: 18,
+          padding: 18, position: 'sticky', top: 24 }}>
+          <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10,
+            letterSpacing: 1.5, color: '#7A6E68', fontWeight: 700, marginBottom: 12 }}>SALTAR A</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {SCREEN_LIST.map(s => (
+              <button key={s.id} onClick={() => setInitial(s.id)} style={{
+                background: initial === s.id ? '#FFE4EA' : 'transparent',
+                color: initial === s.id ? '#D93E60' : '#1A1715',
+                border: 'none', cursor: 'pointer', textAlign: 'left',
+                padding: '8px 10px', borderRadius: 8,
+                fontFamily: '"Manrope", system-ui', fontSize: 13,
+                fontWeight: initial === s.id ? 700 : 500,
+              }}>{s.label}</button>
+            ))}
+          </div>
+          <div style={{ marginTop: 14, padding: 12, background: '#FAF6F2', borderRadius: 12,
+            fontSize: 11, color: '#7A6E68', lineHeight: 1.5 }}>
+            Esta lista solo cambia el punto de inicio. Una vez dentro de la app, puedes navegar libremente con los botones.
+          </div>
+        </div>
+
+        {/* Center: phone */}
+        <PhoneStage key={initial} initial={initial}/>
+
+        {/* Right: callouts */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, position: 'sticky', top: 24 }}>
+          {[
+            { t: 'Sin conexión, garantizado', b: 'El indicador "● Sin conexión" en verde demuestra que la app sigue funcional. Toda la matriz está en el dispositivo.' },
+            { t: '3 pasos · 2 minutos', b: 'Categoría animal → Sistema afectado → Síntomas. Botones grandes para uso con guantes en campo.' },
+            { t: 'Resultado siempre orientativo', b: 'Banner ámbar permanente: nunca reemplaza al MVZ. Cumple lo que pidieron explícitamente.' },
+            { t: 'Pendientes de envío', b: 'Las consultas hechas offline se marcan con punto rojo y suben automáticamente al recuperar señal.' },
+          ].map((c, i) => (
+            <div key={i} style={{ background: '#fff', border: '1px solid #EDE7E2', borderRadius: 14, padding: 14 }}>
+              <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+                fontWeight: 700, fontSize: 15, color: '#1A1715', letterSpacing: -0.2 }}>{c.t}</div>
+              <div style={{ fontSize: 12, color: '#7A6E68', marginTop: 4, lineHeight: 1.5 }}>{c.b}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AdminSection() {
+  return (
+    <section style={{ position: 'relative', zIndex: 2, padding: '40px 0 80px',
+      background: '#1A1715', color: '#fff' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px 40px' }}>
+        <div style={{ maxWidth: 720 }}>
+          <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+            letterSpacing: 1.5, color: '#F65275', fontWeight: 700 }}>PANEL ADMINISTRATIVO WEB</div>
+          <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+            fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 700, letterSpacing: -1.2,
+            color: '#fff', marginTop: 12, lineHeight: 1.05 }}>
+            El equipo actualiza<br/>la matriz. La app se sincroniza sola.
+          </div>
+          <div style={{ fontSize: 17, color: 'rgba(255,255,255,0.6)', marginTop: 14, lineHeight: 1.5 }}>
+            Desde el navegador, el equipo autorizado sube el Excel, versiona la matriz y monitorea las granjas registradas, sin tocar código y sin depender de nosotros para cada ajuste.
+          </div>
+        </div>
+
+        <div style={{ marginTop: 40, height: 620, borderRadius: 18, overflow: 'hidden',
+          boxShadow: '0 40px 100px rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.08)' }}>
+          {/* Browser chrome */}
+          <div style={{ height: 36, background: '#2A2522', display: 'flex',
+            alignItems: 'center', padding: '0 14px', gap: 8 }}>
+            <div style={{ width: 11, height: 11, borderRadius: 99, background: '#FF5F57' }}/>
+            <div style={{ width: 11, height: 11, borderRadius: 99, background: '#FEBC2E' }}/>
+            <div style={{ width: 11, height: 11, borderRadius: 99, background: '#28C840' }}/>
+            <div style={{ marginLeft: 18, padding: '4px 14px', background: 'rgba(255,255,255,0.08)',
+              borderRadius: 8, fontSize: 12, fontFamily: '"JetBrains Mono", monospace',
+              color: 'rgba(255,255,255,0.6)' }}>admin.porkcolombia.co</div>
+          </div>
+          <div style={{ height: 'calc(100% - 36px)', background: '#FAF6F2' }}>
+            <AdminPanel/>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 40, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+          {[
+            { t: 'Importación de Excel', b: 'Sube la matriz clínica aprobada por Porkcolombia. El sistema la transforma en lógica.' },
+            { t: 'Versionado automático', b: 'Cada cambio crea una nueva versión. La app descarga la última al estar en línea.' },
+            { t: 'Base de datos de usuarios', b: 'Listado consolidado de porcicultores: granja, ubicación, tamaño, frecuencia de uso.' },
+            { t: 'Reportes nacionales', b: 'Mapas de calor por departamento, sistemas más consultados, tendencias.' },
+          ].map((c, i) => (
+            <div key={i} style={{ background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: 16 }}>
+              <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+                fontWeight: 700, fontSize: 16, color: '#fff', letterSpacing: -0.3 }}>{c.t}</div>
+              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', marginTop: 6, lineHeight: 1.5 }}>{c.b}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ScopeSection() {
+  return (
+    <section style={{ position: 'relative', zIndex: 2, padding: '64px 0 100px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
+        <SectionTitle eyebrow="FASES & ENTREGABLES" title="Plan de ejecución por rangos">
+          Cuatro frentes de trabajo con tiempos estimados. El calendario final depende del alcance aprobado, la disponibilidad de insumos y los ciclos de validación interna.
+        </SectionTitle>
+
+        <div style={{ marginTop: 32, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+          {[
+            { ph: 'F1', wk: '4-6 sem.', t: 'Diseño & lógica', items: ['UX/UI definitivo', 'Transformación matriz Excel -> JSON', 'Arquitectura offline-first', 'Validación con equipo técnico'] },
+            { ph: 'F2', wk: '10-14 sem.', t: 'Desarrollo móvil', items: ['App iOS + Android (React Native)', 'Motor de diagnóstico', 'Registro de usuarios', 'Sincronización offline'] },
+            { ph: 'F3', wk: '6-8 sem.', t: 'Panel admin web', items: ['Importador de Excel', 'Versionado de matriz', 'Gestión de usuarios', 'Dashboard de reportes'] },
+            { ph: 'F4', wk: '3-4 sem.', t: 'Publicación', items: ['App Store + Play Store', 'Pruebas con usuarios de campo', 'Documentación operativa', 'Capacitación al equipo'] },
+          ].map((p, i) => (
+            <div key={i} style={{ background: '#fff', border: '1px solid #EDE7E2', borderRadius: 18,
+              padding: 20, position: 'relative', overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+                <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+                  fontSize: 36, fontWeight: 700, color: '#F65275', letterSpacing: -1.5, lineHeight: 1 }}>{p.ph}</div>
+                <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+                  color: '#7A6E68', fontWeight: 600 }}>{p.wk}</div>
+              </div>
+              <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+                fontSize: 18, fontWeight: 700, marginTop: 14, color: '#1A1715', letterSpacing: -0.3 }}>{p.t}</div>
+              <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {p.items.map((it, j) => (
+                  <div key={j} style={{ display: 'flex', gap: 8, fontSize: 13, color: '#2A2522' }}>
+                    <span style={{ color: '#F65275', fontWeight: 700 }}>+</span>
+                    <span>{it}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Why us */}
+        <div style={{ marginTop: 64, background: '#FFE4EA', borderRadius: 24, padding: 40 }}>
+          <SectionTitle eyebrow="POR QUÉ ESTA PROPUESTA" title="No solo construimos la app. La pensamos como sistema."/>
+          <div style={{ marginTop: 24, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+            {[
+              { t: 'Identidad visual institucional', b: 'La interfaz mantiene una línea visual sobria y compatible con la comunicación de Porkcolombia, sin depender de un departamento específico.' },
+              { t: 'Pensado para campo', b: 'Botones de 56 px, contraste alto, copy en español colombiano. El porcicultor lo entiende a la primera.' },
+              { t: 'Escalable a 2027+', b: 'Arquitectura prevista para agregar más enfermedades, más sistemas y nuevos módulos sin reescribir.' },
+              { t: 'Soporte continuo', b: 'Plan mensual de mantenimiento, actualizaciones de matriz y respuesta a incidencias.' },
+            ].map((c, i) => (
+              <div key={i}>
+                <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+                  fontSize: 18, fontWeight: 700, color: '#1A1715', letterSpacing: -0.3 }}>{c.t}</div>
+                <div style={{ fontSize: 14, color: '#7A6E68', marginTop: 6, lineHeight: 1.5 }}>{c.b}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer style={{ background: '#1A1715', color: '#fff', padding: '80px 40px',
+      position: 'relative', zIndex: 2 }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto',
+        display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40, flexWrap: 'wrap' }}>
+        <div>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+              <circle cx="18" cy="18" r="13" stroke="#F65275" strokeWidth="3"/>
+              <line x1="27" y1="27" x2="38" y2="38" stroke="#F65275" strokeWidth="3" strokeLinecap="round"/>
+              <ellipse cx="15" cy="18" rx="2" ry="2.6" fill="#F65275"/>
+              <ellipse cx="21" cy="18" rx="2" ry="2.6" fill="#F65275"/>
+            </svg>
+            <span style={{ fontFamily: '"Bricolage Grotesque", system-ui', fontWeight: 700, fontSize: 22, letterSpacing: -0.5 }}>CENIDIAG</span>
+          </div>
+          <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+            fontSize: 'clamp(40px, 5vw, 72px)', fontWeight: 700, letterSpacing: -2,
+            lineHeight: 1, marginTop: 24, maxWidth: 700 }}>
+            Hagámoslo realidad para 2026.
+          </div>
+          <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.5)', marginTop: 16, maxWidth: 520 }}>
+            Agendamos una sesión de 30 minutos para revisar alcance, ajustes y firma.
+          </div>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8,
+          fontFamily: '"JetBrains Mono", monospace', fontSize: 12, color: 'rgba(255,255,255,0.7)' }}>
+          <div>DANIEL CARRERA</div>
+          <div>carreraprogrammer@gmail.com</div>
+          <div style={{ marginTop: 16 }}>PORKCOLOMBIA</div>
+          <div>EQUIPO AUTORIZADO VALENZUELA</div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function Tweaks({ tw, setTw }) {
+  return null;
+}
+
+function App() {
+  const [tw, setTw] = useState(TWEAK_DEFAULTS);
+
+  return (
+    <div data-screen-label="01 Propuesta Cover">
+      <Cover/>
+      <div data-screen-label="02 Prototipo móvil">
+        {tw.view === 'canvas' ? <CanvasView/> : <PrototypeSection/>}
+      </div>
+      {tw.showAdmin && (
+        <div data-screen-label="03 Panel admin web">
+          <AdminSection/>
+        </div>
+      )}
+      <div data-screen-label="04 Plan de ejecución">
+        <ScopeSection/>
+      </div>
+      <Footer/>
+      <Tweaks tw={tw} setTw={setTw}/>
+    </div>
+  );
+}
+
+function bootCenidiag() {
+  if (!window.IOSDevice || !window.PhoneApp || !window.AdminPanel) {
+    setTimeout(bootCenidiag, 80);
+    return;
+  }
+  try {
+    ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  } catch(e) {
+    document.getElementById('root').textContent = 'ERR: ' + e.message;
+  }
+}
+bootCenidiag();
+
+
+})();
+</script>
+</body></html>
