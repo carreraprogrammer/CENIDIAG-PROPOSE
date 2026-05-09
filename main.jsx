@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './style.css';
 import { IOSDevice } from './ios-frame.jsx';
@@ -121,47 +121,6 @@ function usePastHero(active) {
   }, [active]);
 
   return pastHero;
-}
-
-function usePrototypeScrollMotion() {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const section = ref.current;
-    if (!section) return undefined;
-
-    const update = () => {
-      if (window.innerWidth <= 1100) {
-        section.style.setProperty('--prototype-left-y', '0px');
-        section.style.setProperty('--prototype-right-y', '0px');
-        section.style.setProperty('--prototype-card-y', '0px');
-        section.style.setProperty('--prototype-card-y-2', '0px');
-        section.style.setProperty('--prototype-card-y-3', '0px');
-        section.style.setProperty('--prototype-card-y-4', '0px');
-        return;
-      }
-
-      const rect = section.getBoundingClientRect();
-      const progress = Math.min(1, Math.max(0, (window.innerHeight * 0.72 - rect.top) / window.innerHeight));
-      const eased = 1 - Math.pow(1 - progress, 3);
-      section.style.setProperty('--prototype-left-y', `${Math.round((1 - eased) * -34)}px`);
-      section.style.setProperty('--prototype-right-y', `${Math.round((1 - eased) * -48)}px`);
-      section.style.setProperty('--prototype-card-y', `${Math.round((1 - eased) * -22)}px`);
-      section.style.setProperty('--prototype-card-y-2', `${Math.round((1 - eased) * -15)}px`);
-      section.style.setProperty('--prototype-card-y-3', `${Math.round((1 - eased) * -10)}px`);
-      section.style.setProperty('--prototype-card-y-4', `${Math.round((1 - eased) * -4)}px`);
-    };
-
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    return () => {
-      window.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
-    };
-  }, []);
-
-  return ref;
 }
 
 function Cover() {
@@ -304,9 +263,8 @@ function SectionTitle({ eyebrow, title, children }) {
 
 function PrototypeSection() {
   const [initial, setInitial] = useState('splash');
-  const sectionRef = usePrototypeScrollMotion();
   return (
-    <section ref={sectionRef} className="prototype-section" style={{ position: 'relative', zIndex: 2, padding: '40px 0 80px' }}>
+    <section className="prototype-section" style={{ position: 'relative', zIndex: 2, padding: '40px 0 80px' }}>
       <div className="section-shell" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
         <SectionTitle eyebrow="PROTOTIPO INTERACTIVO" title="Tócalo. Funciona.">
           Esto no es un mockup. Es un prototipo navegable: empieza por el splash, registra una granja, completa un diagnóstico de tos respiratoria en un lote de precebos y revisa la matriz coincidente.
