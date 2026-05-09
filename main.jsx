@@ -614,9 +614,9 @@ function FloatingDownloadCTA({ visible }) {
       href={DOCUMENTS_URL}
       download
       className={`floating-download ${visible ? 'is-visible' : ''}`}
-      aria-label="Descargar paquete CP-0008"
+      aria-label="Descargar cotización"
     >
-      <span className="floating-download__label">Descargar CP-0008</span>
+      <span className="floating-download__label">Descargar cotización</span>
       <span className="floating-download__icon">↓</span>
     </a>
   );
