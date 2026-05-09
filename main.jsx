@@ -12,7 +12,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "view": "phone"
 }/*EDITMODE-END*/;
 
-const ACCESS_CODE = '1085333083';
+const ACCESS_CODE = 'porkadmin';
 const DOCUMENTS_URL = '/docs/CP-0008-CENIDIAG-PAQUETE.zip';
 
 const SCREEN_LIST = [
