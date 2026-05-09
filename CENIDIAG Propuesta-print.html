@@ -2111,7 +2111,7 @@ function AdminSection() {
             <div style={{ width: 11, height: 11, borderRadius: 99, background: '#28C840' }}/>
             <div style={{ marginLeft: 18, padding: '4px 14px', background: 'rgba(255,255,255,0.08)',
               borderRadius: 8, fontSize: 12, fontFamily: '"JetBrains Mono", monospace',
-              color: 'rgba(255,255,255,0.6)' }}>admin.porkcolombia.co</div>
+              color: 'rgba(255,255,255,0.6)' }}>admin.cenidiag.co</div>
           </div>
           <div style={{ height: 'calc(100% - 36px)', background: '#FAF6F2' }}>
             <AdminPanel/>
@@ -2123,7 +2123,7 @@ function AdminSection() {
             { t: 'Importación de Excel', b: 'Sube la matriz clínica aprobada por Porkcolombia. El sistema la transforma en lógica.' },
             { t: 'Versionado automático', b: 'Cada cambio crea una nueva versión. La app descarga la última al estar en línea.' },
             { t: 'Base de datos de usuarios', b: 'Listado consolidado de porcicultores: granja, ubicación, tamaño, frecuencia de uso.' },
-            { t: 'Reportes nacionales', b: 'Mapas de calor por departamento, sistemas más consultados, tendencias.' },
+            { t: 'Reportes de uso', b: 'Listado consolidado de porcicultores, granjas, ubicación, frecuencia de uso y consultas realizadas.' },
           ].map((c, i) => (
             <div key={i} style={{ background: 'rgba(255,255,255,0.04)',
               border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: 16 }}>
@@ -2149,7 +2149,7 @@ function ScopeSection() {
         <div style={{ marginTop: 32, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
           {[
             { ph: 'F1', wk: '4-6 sem.', t: 'Diseño & lógica', items: ['UX/UI definitivo', 'Transformación matriz Excel -> JSON', 'Arquitectura offline-first', 'Validación con equipo técnico'] },
-            { ph: 'F2', wk: '10-14 sem.', t: 'Desarrollo móvil', items: ['App iOS + Android (React Native)', 'Motor de diagnóstico', 'Registro de usuarios', 'Sincronización offline'] },
+            { ph: 'F2', wk: '10-14 sem.', t: 'Desarrollo móvil', items: ['App iOS + Android (Ionic)', 'Motor de diagnóstico', 'Registro de usuarios', 'Sincronización offline'] },
             { ph: 'F3', wk: '6-8 sem.', t: 'Panel admin web', items: ['Importador de Excel', 'Versionado de matriz', 'Gestión de usuarios', 'Dashboard de reportes'] },
             { ph: 'F4', wk: '3-4 sem.', t: 'Publicación', items: ['App Store + Play Store', 'Pruebas con usuarios de campo', 'Documentación operativa', 'Capacitación al equipo'] },
           ].map((p, i) => (
@@ -2182,7 +2182,7 @@ function ScopeSection() {
             {[
               { t: 'Identidad visual institucional', b: 'La interfaz mantiene una línea visual sobria y compatible con la comunicación de Porkcolombia, sin depender de un departamento específico.' },
               { t: 'Pensado para campo', b: 'Botones de 56 px, contraste alto, copy en español colombiano. El porcicultor lo entiende a la primera.' },
-              { t: 'Escalable a 2027+', b: 'Arquitectura prevista para agregar más enfermedades, más sistemas y nuevos módulos sin reescribir.' },
+              { t: 'Escalable a 2027+', b: 'Arquitectura diseñada para soportar más enfermedades y sistemas. Nuevos módulos se agregan mediante alcance adicional acordado.' },
               { t: 'Soporte continuo', b: 'Plan mensual de mantenimiento, actualizaciones de matriz y respuesta a incidencias.' },
             ].map((c, i) => (
               <div key={i}>
