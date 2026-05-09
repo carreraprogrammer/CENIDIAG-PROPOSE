@@ -13,8 +13,7 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 const ACCESS_CODE = '1085333083';
-const QUOTE_URL = '/docs/COTIZACION CP-0008 - PORKCOLOMBIA.pdf';
-const MAINTENANCE_URL = '/docs/ANEXO CP-0008-MANTENIMIENTO.pdf';
+const DOCUMENTS_URL = '/docs/CP-0008-CENIDIAG-PAQUETE.zip';
 
 const SCREEN_LIST = [
   { id: 'splash',  label: '01 · Splash' },
@@ -30,30 +29,57 @@ const SCREEN_LIST = [
   { id: 'profile', label: '11 · Perfil' },
 ];
 
-function DownloadLink({ href, children, dark = false }) {
+function DownloadLink({ href, children, dark = false, variant = 'secondary', sub }) {
+  const primary = variant === 'primary';
   return (
     <a
       href={href}
       download
       style={{
-        height: 42,
-        padding: '0 14px',
+        minHeight: primary ? 74 : 60,
+        padding: primary ? '14px 18px' : '12px 16px',
+        borderRadius: 16,
+        border: primary
+          ? '1px solid #F65275'
+          : (dark ? '1px solid rgba(255,255,255,0.16)' : '1px solid #EDE7E2'),
+        background: primary
+          ? '#F65275'
+          : (dark ? 'rgba(255,255,255,0.06)' : '#fff'),
+        color: primary ? '#fff' : (dark ? '#fff' : '#1A1715'),
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 14,
+        textDecoration: 'none',
+        fontFamily: '"Manrope", system-ui',
+        fontSize: primary ? 15 : 14,
+        fontWeight: 700,
+        width: '100%',
+        boxShadow: primary ? '0 18px 36px rgba(246,82,117,0.24)' : 'none',
+      }}
+    >
+      <span>
+        <span style={{ display: 'block' }}>{children}</span>
+        {sub && <span style={{
+          display: 'block',
+          marginTop: 3,
+          color: primary ? 'rgba(255,255,255,0.72)' : (dark ? 'rgba(255,255,255,0.48)' : '#7A6E68'),
+          fontSize: 11,
+          fontWeight: 600,
+        }}>{sub}</span>}
+      </span>
+      <span style={{
+        width: 34,
+        height: 34,
         borderRadius: 12,
-        border: dark ? '1px solid rgba(255,255,255,0.14)' : '1px solid #EDE7E2',
-        background: dark ? 'rgba(255,255,255,0.06)' : '#fff',
-        color: dark ? '#fff' : '#1A1715',
+        background: primary ? 'rgba(255,255,255,0.16)' : '#FFE4EA',
+        color: primary ? '#fff' : '#F65275',
+        fontFamily: '"JetBrains Mono", monospace',
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 8,
-        textDecoration: 'none',
-        fontFamily: '"Manrope", system-ui',
-        fontSize: 13,
-        fontWeight: 700,
-      }}
-    >
-      <span style={{ color: '#F65275', fontFamily: '"JetBrains Mono", monospace' }}>↓</span>
-      {children}
+        flexShrink: 0,
+      }}>↓</span>
     </a>
   );
 }
@@ -119,9 +145,10 @@ function Cover() {
               <div style={{ fontSize: 12, color: '#7A6E68', marginTop: 2 }}>{c.sub}</div>
             </div>
           ))}
-          <div data-reveal style={{ '--reveal-delay': '260ms', display: 'grid', gridTemplateColumns: '1fr', gap: 8 }}>
-            <DownloadLink href={QUOTE_URL}>Descargar cotización</DownloadLink>
-            <DownloadLink href={MAINTENANCE_URL}>Descargar anexo</DownloadLink>
+          <div data-reveal style={{ '--reveal-delay': '260ms', marginTop: 4 }}>
+            <DownloadLink href={DOCUMENTS_URL} variant="primary" sub="Cotización + anexo de mantenimiento">
+              Descargar paquete CP-0008
+            </DownloadLink>
           </div>
         </div>
       </div>
@@ -541,9 +568,10 @@ function Footer() {
           <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.5)', marginTop: 16, maxWidth: 520 }}>
             Agendamos una sesión de 30 minutos para revisar alcance, ajustes y firma.
           </div>
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
-            <DownloadLink href={QUOTE_URL} dark>CP-0008 Cotización</DownloadLink>
-            <DownloadLink href={MAINTENANCE_URL} dark>Anexo mantenimiento</DownloadLink>
+          <div style={{ marginTop: 24, maxWidth: 360 }}>
+            <DownloadLink href={DOCUMENTS_URL} dark variant="primary" sub="Cotización + anexo en ZIP">
+              Descargar paquete CP-0008
+            </DownloadLink>
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8,
