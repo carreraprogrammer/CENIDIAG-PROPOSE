@@ -672,7 +672,6 @@ function AccessGate({ onUnlock }) {
         </div>
         <input
           autoFocus
-          inputMode="numeric"
           type="password"
           value={code}
           onChange={(event) => {
