@@ -246,6 +246,34 @@ textarea {
   overflow-wrap: anywhere;
 }
 
+.prototype-nav[data-reveal] {
+  transform: translate3d(0, calc(24px + var(--prototype-left-y, 0px)), 0);
+}
+
+.prototype-nav[data-reveal].is-visible {
+  transform: translate3d(0, var(--prototype-left-y, 0px), 0);
+}
+
+.prototype-callout-card[data-reveal] {
+  transform: translate3d(0, calc(24px + var(--prototype-right-y, 0px) + var(--prototype-card-y, 0px)), 0);
+}
+
+.prototype-callout-card[data-reveal].is-visible {
+  transform: translate3d(0, calc(var(--prototype-right-y, 0px) + var(--prototype-card-y, 0px)), 0);
+}
+
+.prototype-callout-card[data-reveal]:nth-child(2).is-visible {
+  transform: translate3d(0, calc(var(--prototype-right-y, 0px) + var(--prototype-card-y-2, 0px)), 0);
+}
+
+.prototype-callout-card[data-reveal]:nth-child(3).is-visible {
+  transform: translate3d(0, calc(var(--prototype-right-y, 0px) + var(--prototype-card-y-3, 0px)), 0);
+}
+
+.prototype-callout-card[data-reveal]:nth-child(4).is-visible {
+  transform: translate3d(0, calc(var(--prototype-right-y, 0px) + var(--prototype-card-y-4, 0px)), 0);
+}
+
 .phone-stage__device {
   margin-left: auto;
   margin-right: auto;
@@ -287,6 +315,16 @@ textarea {
   .prototype-callouts {
     position: relative !important;
     top: auto !important;
+  }
+
+  .prototype-nav[data-reveal],
+  .prototype-nav[data-reveal].is-visible,
+  .prototype-callout-card[data-reveal],
+  .prototype-callout-card[data-reveal].is-visible,
+  .prototype-callout-card[data-reveal]:nth-child(2).is-visible,
+  .prototype-callout-card[data-reveal]:nth-child(3).is-visible,
+  .prototype-callout-card[data-reveal]:nth-child(4).is-visible {
+    transform: translate3d(0, 0, 0) !important;
   }
 
   .prototype-nav > div:nth-child(2) {
@@ -504,7 +542,11 @@ textarea {
   .phone-reveal.is-visible,
   .timeline-total.is-visible,
   .timeline-total.is-visible .timeline-total-number,
-  .ai-orb {
+  .ai-orb,
+  .prototype-nav[data-reveal],
+  .prototype-nav[data-reveal].is-visible,
+  .prototype-callout-card[data-reveal],
+  .prototype-callout-card[data-reveal].is-visible {
     opacity: 1;
     transform: none;
     animation: none;

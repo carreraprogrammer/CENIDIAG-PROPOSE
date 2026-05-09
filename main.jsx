@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './style.css';
 import { IOSDevice } from './ios-frame.jsx';
@@ -121,6 +121,47 @@ function usePastHero(active) {
   }, [active]);
 
   return pastHero;
+}
+
+function usePrototypeScrollMotion() {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const section = ref.current;
+    if (!section) return undefined;
+
+    const update = () => {
+      if (window.innerWidth <= 1100) {
+        section.style.setProperty('--prototype-left-y', '0px');
+        section.style.setProperty('--prototype-right-y', '0px');
+        section.style.setProperty('--prototype-card-y', '0px');
+        section.style.setProperty('--prototype-card-y-2', '0px');
+        section.style.setProperty('--prototype-card-y-3', '0px');
+        section.style.setProperty('--prototype-card-y-4', '0px');
+        return;
+      }
+
+      const rect = section.getBoundingClientRect();
+      const progress = Math.min(1, Math.max(0, (window.innerHeight * 0.72 - rect.top) / window.innerHeight));
+      const eased = 1 - Math.pow(1 - progress, 3);
+      section.style.setProperty('--prototype-left-y', `${Math.round((1 - eased) * -34)}px`);
+      section.style.setProperty('--prototype-right-y', `${Math.round((1 - eased) * -48)}px`);
+      section.style.setProperty('--prototype-card-y', `${Math.round((1 - eased) * -22)}px`);
+      section.style.setProperty('--prototype-card-y-2', `${Math.round((1 - eased) * -15)}px`);
+      section.style.setProperty('--prototype-card-y-3', `${Math.round((1 - eased) * -10)}px`);
+      section.style.setProperty('--prototype-card-y-4', `${Math.round((1 - eased) * -4)}px`);
+    };
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  return ref;
 }
 
 function Cover() {
@@ -263,8 +304,9 @@ function SectionTitle({ eyebrow, title, children }) {
 
 function PrototypeSection() {
   const [initial, setInitial] = useState('splash');
+  const sectionRef = usePrototypeScrollMotion();
   return (
-    <section style={{ position: 'relative', zIndex: 2, padding: '40px 0 80px' }}>
+    <section ref={sectionRef} className="prototype-section" style={{ position: 'relative', zIndex: 2, padding: '40px 0 80px' }}>
       <div className="section-shell" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
         <SectionTitle eyebrow="PROTOTIPO INTERACTIVO" title="Tócalo. Funciona.">
           Esto no es un mockup. Es un prototipo navegable: empieza por el splash, registra una granja, completa un diagnóstico de tos respiratoria en un lote de precebos y revisa la matriz coincidente.
@@ -274,7 +316,7 @@ function PrototypeSection() {
       <div className="prototype-grid" style={{ display: 'grid', gridTemplateColumns: '300px 1fr 300px',
         gap: 24, alignItems: 'start', maxWidth: 1280, margin: '32px auto 0', padding: '0 40px' }}>
         {/* Left: jump-to nav */}
-        <div data-reveal className="prototype-nav" style={{ background: '#fff', border: '1px solid #EDE7E2', borderRadius: 18,
+        <div data-reveal className="prototype-nav prototype-side-panel" style={{ background: '#fff', border: '1px solid #EDE7E2', borderRadius: 18,
           padding: 18, position: 'sticky', top: 24 }}>
           <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10,
             letterSpacing: 1.5, color: '#7A6E68', fontWeight: 700, marginBottom: 12 }}>SALTAR A</div>
@@ -309,7 +351,7 @@ function PrototypeSection() {
             { t: 'Resultado siempre orientativo', b: 'Banner ámbar permanente: nunca reemplaza al MVZ. Cumple lo que pidieron explícitamente.' },
             { t: 'Pendientes de envío', b: 'Las consultas hechas offline se marcan con punto rojo y suben automáticamente al recuperar señal.' },
           ].map((c, i) => (
-            <div data-reveal key={i} style={{ '--reveal-delay': `${i * 90}ms`, background: '#fff', border: '1px solid #EDE7E2', borderRadius: 14, padding: 14 }}>
+            <div data-reveal className="prototype-callout-card" key={i} style={{ '--reveal-delay': `${i * 90}ms`, background: '#fff', border: '1px solid #EDE7E2', borderRadius: 14, padding: 14 }}>
               <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
                 fontWeight: 700, fontSize: 15, color: '#1A1715', letterSpacing: -0.2 }}>{c.t}</div>
               <div style={{ fontSize: 12, color: '#7A6E68', marginTop: 4, lineHeight: 1.5 }}>{c.b}</div>
