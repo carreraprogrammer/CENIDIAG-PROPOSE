@@ -105,6 +105,24 @@ function useScrollReveal(active) {
   }, [active]);
 }
 
+function usePastHero(active) {
+  const [pastHero, setPastHero] = useState(false);
+
+  useEffect(() => {
+    if (!active) return undefined;
+
+    const onScroll = () => {
+      setPastHero(window.scrollY > Math.min(window.innerHeight * 0.82, 760));
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [active]);
+
+  return pastHero;
+}
+
 function Cover() {
   return (
     <header style={{
@@ -590,6 +608,20 @@ function Tweaks({ tw, setTw }) {
   return null;
 }
 
+function FloatingDownloadCTA({ visible }) {
+  return (
+    <a
+      href={DOCUMENTS_URL}
+      download
+      className={`floating-download ${visible ? 'is-visible' : ''}`}
+      aria-label="Descargar paquete CP-0008"
+    >
+      <span className="floating-download__label">Descargar CP-0008</span>
+      <span className="floating-download__icon">↓</span>
+    </a>
+  );
+}
+
 function AccessGate({ onUnlock }) {
   const [code, setCode] = useState('');
   const [error, setError] = useState(false);
@@ -660,6 +692,7 @@ function App() {
   const [tw, setTw] = useState(TWEAK_DEFAULTS);
   const [unlocked, setUnlocked] = useState(() => sessionStorage.getItem('proposal_access_granted') === '1');
   useScrollReveal(unlocked);
+  const showFloatingDownload = usePastHero(unlocked);
 
   if (!unlocked) {
     return <AccessGate onUnlock={() => setUnlocked(true)}/>;
@@ -684,6 +717,7 @@ function App() {
       </div>
       <Footer/>
       <Tweaks tw={tw} setTw={setTw}/>
+      <FloatingDownloadCTA visible={showFloatingDownload}/>
     </div>
   );
 }
