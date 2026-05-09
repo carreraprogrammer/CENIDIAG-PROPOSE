@@ -13,6 +13,8 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 const ACCESS_CODE = '1085333083';
+const QUOTE_URL = '/docs/COTIZACION CP-0008 - PORKCOLOMBIA.pdf';
+const MAINTENANCE_URL = '/docs/ANEXO CP-0008-MANTENIMIENTO.pdf';
 
 const SCREEN_LIST = [
   { id: 'splash',  label: '01 · Splash' },
@@ -27,6 +29,34 @@ const SCREEN_LIST = [
   { id: 'matrix',  label: '10 · Matriz' },
   { id: 'profile', label: '11 · Perfil' },
 ];
+
+function DownloadLink({ href, children, dark = false }) {
+  return (
+    <a
+      href={href}
+      download
+      style={{
+        height: 42,
+        padding: '0 14px',
+        borderRadius: 12,
+        border: dark ? '1px solid rgba(255,255,255,0.14)' : '1px solid #EDE7E2',
+        background: dark ? 'rgba(255,255,255,0.06)' : '#fff',
+        color: dark ? '#fff' : '#1A1715',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
+        textDecoration: 'none',
+        fontFamily: '"Manrope", system-ui',
+        fontSize: 13,
+        fontWeight: 700,
+      }}
+    >
+      <span style={{ color: '#F65275', fontFamily: '"JetBrains Mono", monospace' }}>↓</span>
+      {children}
+    </a>
+  );
+}
 
 function useScrollReveal(active) {
   useEffect(() => {
@@ -89,6 +119,10 @@ function Cover() {
               <div style={{ fontSize: 12, color: '#7A6E68', marginTop: 2 }}>{c.sub}</div>
             </div>
           ))}
+          <div data-reveal style={{ '--reveal-delay': '260ms', display: 'grid', gridTemplateColumns: '1fr', gap: 8 }}>
+            <DownloadLink href={QUOTE_URL}>Descargar cotización</DownloadLink>
+            <DownloadLink href={MAINTENANCE_URL}>Descargar anexo</DownloadLink>
+          </div>
         </div>
       </div>
 
@@ -376,7 +410,7 @@ function ScopeSection() {
     <section style={{ position: 'relative', zIndex: 2, padding: '64px 0 100px' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
         <SectionTitle eyebrow="FASES & ENTREGABLES" title="Plan de ejecución por rangos">
-          Cuatro frentes de trabajo con tiempos estimados. El calendario final depende del alcance aprobado, la disponibilidad de insumos y los ciclos de validación interna.
+          Siete fases con tiempos estimados. El calendario final depende del alcance aprobado, la disponibilidad de insumos y los ciclos de validación interna.
         </SectionTitle>
 
         <div data-reveal className="timeline-total" style={{ marginTop: 24, background: '#1A1715', color: '#fff',
@@ -387,7 +421,7 @@ function ScopeSection() {
               letterSpacing: 1.5, color: '#F65275', fontWeight: 700 }}>TIEMPO TOTAL ESTIMADO</div>
             <div style={{ color: 'rgba(255,255,255,0.62)', fontSize: 15,
               marginTop: 8, lineHeight: 1.5, maxWidth: 620 }}>
-              Rango realista para una versión institucional con app, panel administrativo, validaciones, publicación y piloto IA sin comprimir ciclos de aprobación.
+              Rango realista para una versión institucional con app móvil Ionic, backend, panel administrativo, validaciones, publicación y handoff técnico.
             </div>
           </div>
           <div className="timeline-total-number" style={{ fontFamily: '"Bricolage Grotesque", system-ui',
@@ -399,10 +433,13 @@ function ScopeSection() {
 
         <div style={{ marginTop: 32, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
           {[
-            { ph: 'F1', wk: '4-6 sem.', t: 'Diseño & lógica', items: ['UX/UI definitivo', 'Transformación matriz Excel -> JSON', 'Arquitectura offline-first', 'Validación con equipo técnico'] },
-            { ph: 'F2', wk: '10-14 sem.', t: 'Desarrollo móvil', items: ['App iOS + Android (React Native)', 'Motor de diagnóstico', 'Registro de usuarios', 'Sincronización offline'] },
-            { ph: 'F3', wk: '6-8 sem.', t: 'Panel admin web', items: ['Importador de Excel', 'Versionado de matriz', 'Gestión de usuarios', 'Dashboard de reportes'] },
-            { ph: 'F4', wk: '3-4 sem.', t: 'Publicación', items: ['App Store + Play Store', 'Pruebas con usuarios de campo', 'Documentación operativa', 'Capacitación al equipo'] },
+            { ph: 'F1', wk: '2-3 sem.', t: 'Levantamiento y matriz clínica', items: ['Análisis de matriz Excel', 'Modelo de datos JSON', 'Validación con equipo técnico', 'Criterios de aceptación'] },
+            { ph: 'F2', wk: '3-4 sem.', t: 'Diseño funcional e interfaces', items: ['UX/UI para uso en campo', 'Flujo guiado de síntomas', 'Diseño del panel web', 'Wireframes validados'] },
+            { ph: 'F3', wk: '2-3 sem.', t: 'Arquitectura técnica', items: ['Arquitectura Ionic + web', 'Modelo local RxDB', 'Sincronización offline-first', 'Roles y autenticación'] },
+            { ph: 'F4', wk: '5-7 sem.', t: 'Núcleo del sistema', items: ['Backend API + base de datos', 'Motor determinístico JSON', 'Sincronización offline -> nube', 'Versionado de matriz'] },
+            { ph: 'F5', wk: '8-10 sem.', t: 'App móvil iOS + Android', items: ['Desarrollo en Ionic', 'Registro de usuario y granja', 'Almacenamiento con RxDB', 'Sincronización automática'] },
+            { ph: 'F6', wk: '4-6 sem.', t: 'Panel administrativo web', items: ['Importador Excel -> JSON', 'Versionado de matriz', 'Listado de usuarios y granjas', 'Roles administrativos'] },
+            { ph: 'F7', wk: '3-4 sem.', t: 'Pruebas, publicación y entrega', items: ['Pruebas offline y usabilidad', 'App Store + Play Store', 'Capacitación administrativa', 'Handoff y código fuente'] },
           ].map((p, i) => (
             <div data-reveal key={i} style={{ '--reveal-delay': `${i * 90}ms`, background: '#fff', border: '1px solid #EDE7E2', borderRadius: 18,
               padding: 20, position: 'relative', overflow: 'hidden' }}>
@@ -424,6 +461,37 @@ function ScopeSection() {
               </div>
             </div>
           ))}
+          <div data-reveal style={{
+            '--reveal-delay': '360ms',
+            background: '#FFE4EA',
+            border: '1px solid #F9B8C7',
+            borderRadius: 18,
+            padding: 20,
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
+            <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
+              letterSpacing: 1.5, color: '#D93E60', fontWeight: 700 }}>GARANTÍA POST-ENTREGA</div>
+            <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+              fontSize: 44, fontWeight: 700, color: '#F65275',
+              letterSpacing: -1.8, lineHeight: 1, marginTop: 14 }}>90 días</div>
+            <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+              fontSize: 18, fontWeight: 700, marginTop: 12,
+              color: '#1A1715', letterSpacing: -0.3 }}>Garantía de calidad</div>
+            <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {[
+                'Desde entrega final y aceptación',
+                'Corrección de bugs reproducibles',
+                'Fallas atribuibles al código entregado',
+                'No incluye nuevas funcionalidades',
+              ].map((it, j) => (
+                <div key={j} style={{ display: 'flex', gap: 8, fontSize: 13, color: '#2A2522' }}>
+                  <span style={{ color: '#F65275', fontWeight: 700 }}>+</span>
+                  <span>{it}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Why us */}
@@ -434,7 +502,7 @@ function ScopeSection() {
               { t: 'Identidad visual institucional', b: 'La interfaz mantiene una línea visual sobria y compatible con la comunicación de Porkcolombia, sin depender de un departamento específico.' },
               { t: 'Pensado para campo', b: 'Botones de 56 px, contraste alto, copy en español colombiano. El porcicultor lo entiende a la primera.' },
               { t: 'Escalable a 2027+', b: 'Arquitectura prevista para agregar más enfermedades, más sistemas y nuevos módulos sin reescribir.' },
-              { t: 'Soporte continuo', b: 'Plan mensual de mantenimiento, actualizaciones de matriz y respuesta a incidencias.' },
+              { t: 'Continuidad opcional', b: 'Plan anual de mantenimiento posterior a la garantía: matriz clínica, compatibilidad iOS/Android, hosting y soporte.' },
             ].map((c, i) => (
               <div data-reveal key={i} style={{ '--reveal-delay': `${i * 80}ms` }}>
                 <div style={{ fontFamily: '"Bricolage Grotesque", system-ui',
@@ -472,6 +540,10 @@ function Footer() {
           </div>
           <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.5)', marginTop: 16, maxWidth: 520 }}>
             Agendamos una sesión de 30 minutos para revisar alcance, ajustes y firma.
+          </div>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
+            <DownloadLink href={QUOTE_URL} dark>CP-0008 Cotización</DownloadLink>
+            <DownloadLink href={MAINTENANCE_URL} dark>Anexo mantenimiento</DownloadLink>
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8,
