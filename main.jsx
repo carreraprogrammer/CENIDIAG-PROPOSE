@@ -339,20 +339,36 @@ function AdminSection() {
           </div>
         </div>
 
-        <div data-reveal className="admin-frame" style={{ marginTop: 40, height: 620, borderRadius: 18, overflow: 'hidden',
+        <div data-reveal className="admin-preview-note" style={{
+          marginTop: 28,
+          padding: '12px 14px',
+          borderRadius: 14,
+          background: 'rgba(255,255,255,0.06)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          color: 'rgba(255,255,255,0.62)',
+          fontSize: 13,
+          lineHeight: 1.45,
+          maxWidth: 560,
+        }}>
+          En celular se muestra como una vista previa del panel web de escritorio. El uso operativo del administrador está pensado para navegador en computador.
+        </div>
+
+        <div data-reveal className="admin-frame" style={{ marginTop: 24, height: 620, borderRadius: 18, overflow: 'hidden',
           boxShadow: '0 40px 100px rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.08)' }}>
           {/* Browser chrome */}
-          <div style={{ height: 36, background: '#2A2522', display: 'flex',
+          <div className="admin-frame__chrome" style={{ height: 36, background: '#2A2522', display: 'flex',
             alignItems: 'center', padding: '0 14px', gap: 8 }}>
             <div style={{ width: 11, height: 11, borderRadius: 99, background: '#FF5F57' }}/>
             <div style={{ width: 11, height: 11, borderRadius: 99, background: '#FEBC2E' }}/>
             <div style={{ width: 11, height: 11, borderRadius: 99, background: '#28C840' }}/>
-            <div style={{ marginLeft: 18, padding: '4px 14px', background: 'rgba(255,255,255,0.08)',
+            <div className="admin-frame__url" style={{ marginLeft: 18, padding: '4px 14px', background: 'rgba(255,255,255,0.08)',
               borderRadius: 8, fontSize: 12, fontFamily: '"JetBrains Mono", monospace',
               color: 'rgba(255,255,255,0.6)' }}>admin.porkcolombia.co</div>
           </div>
-          <div style={{ height: 'calc(100% - 36px)', background: '#FAF6F2' }}>
-            <AdminPanel/>
+          <div className="admin-frame__viewport" style={{ height: 'calc(100% - 36px)', background: '#FAF6F2' }}>
+            <div className="admin-frame__canvas">
+              <AdminPanel/>
+            </div>
           </div>
         </div>
 
