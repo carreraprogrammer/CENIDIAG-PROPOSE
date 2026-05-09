@@ -55,7 +55,7 @@ function DownloadLink({ href, children, dark = false, variant = 'secondary', sub
         fontSize: primary ? 15 : 14,
         fontWeight: 700,
         width: '100%',
-        boxShadow: primary ? '0 18px 36px rgba(246,82,117,0.24)' : 'none',
+        boxShadow: primary ? '0 12px 28px rgba(26,23,21,0.12)' : 'none',
       }}
     >
       <span>
