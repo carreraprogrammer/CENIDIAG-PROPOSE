@@ -125,13 +125,13 @@ function usePastHero(active) {
 
 function Cover() {
   return (
-    <header style={{
+    <header className="cover-section" style={{
       maxWidth: 1280, margin: '0 auto', padding: '64px 40px 32px',
       position: 'relative', zIndex: 2,
     }}>
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40, flexWrap: 'wrap' }}>
-        <div style={{ flex: '1 1 600px' }}>
-          <div data-reveal style={{ display: 'inline-flex', alignItems: 'center', gap: 12,
+      <div className="cover-grid" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40, flexWrap: 'wrap' }}>
+        <div className="cover-copy" style={{ flex: '1 1 600px' }}>
+          <div data-reveal className="proposal-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: 12,
             background: '#fff', padding: '8px 14px', borderRadius: 999,
             border: '1px solid #EDE7E2',
             fontFamily: '"JetBrains Mono", monospace', fontSize: 11, fontWeight: 600,
@@ -139,7 +139,7 @@ function Cover() {
             <span style={{ width: 8, height: 8, borderRadius: 99, background: '#F65275' }}/>
             PROPUESTA · 08 MAY 2026 · PORKCOLOMBIA × CARRERA
           </div>
-          <div data-reveal style={{ fontFamily: '"Bricolage Grotesque", system-ui',
+          <div data-reveal className="hero-title" style={{ fontFamily: '"Bricolage Grotesque", system-ui',
             fontSize: 'clamp(48px, 7vw, 96px)', fontWeight: 700, letterSpacing: -3,
             lineHeight: 0.92, color: '#1A1715' }}>
             Diagnóstico clínico<br/>
@@ -150,7 +150,7 @@ function Cover() {
             <strong style={{ color: '#1A1715' }}>CENIDIAG</strong> es la app móvil que convierte una matriz clínica veterinaria en una herramienta de campo: funciona <strong style={{ color: '#1A1715' }}>sin internet</strong>, registra cada granja en una <strong style={{ color: '#1A1715' }}>base de datos nacional</strong> y entrega un diagnóstico <strong style={{ color: '#1A1715' }}>orientativo</strong> en menos de 2 minutos.
           </div>
         </div>
-        <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', gap: 10, minWidth: 280 }}>
+        <div className="cover-meta" style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', gap: 10, minWidth: 280 }}>
           {[
             { k: 'Para', v: 'Equipo Porkcolombia', sub: '' },
             { k: 'Proyecto', v: 'Tecnología móvil para diagnóstico veterinario', sub: 'Porkcolombia' },
@@ -172,7 +172,7 @@ function Cover() {
       </div>
 
       {/* Pillars */}
-      <div style={{ marginTop: 56, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+      <div className="pillar-grid" style={{ marginTop: 56, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
         {[
           { n: '01', t: 'Offline-first', b: 'Toda la matriz vive en el dispositivo. Funciona en zonas sin señal.' },
           { n: '02', t: 'Matriz determinística', b: 'Lógica estricta basada en una matriz clínica validada por el equipo técnico. Sin IA.' },
@@ -195,11 +195,11 @@ function Cover() {
 
 function PhoneStage({ initial }) {
   return (
-    <div style={{
+    <div className="phone-stage" style={{
       display: 'flex', justifyContent: 'center', alignItems: 'center',
       padding: '12px 0',
     }}>
-      <div style={{ position: 'relative' }}>
+      <div className="phone-stage__device" style={{ position: 'relative' }}>
         <IOSDevice width={402} height={874}>
           <PhoneApp initial={initial}/>
         </IOSDevice>
@@ -220,7 +220,7 @@ function ScreenLabel({ children }) {
 
 function CanvasView() {
   return (
-    <div style={{
+    <div className="canvas-section" style={{
       maxWidth: 1280, margin: '0 auto', padding: '20px 40px 40px',
       position: 'relative', zIndex: 2,
     }}>
@@ -265,16 +265,16 @@ function PrototypeSection() {
   const [initial, setInitial] = useState('splash');
   return (
     <section style={{ position: 'relative', zIndex: 2, padding: '40px 0 80px' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
+      <div className="section-shell" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
         <SectionTitle eyebrow="PROTOTIPO INTERACTIVO" title="Tócalo. Funciona.">
           Esto no es un mockup. Es un prototipo navegable: empieza por el splash, registra una granja, completa un diagnóstico de tos respiratoria en un lote de precebos y revisa la matriz coincidente.
         </SectionTitle>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr 300px',
+      <div className="prototype-grid" style={{ display: 'grid', gridTemplateColumns: '300px 1fr 300px',
         gap: 24, alignItems: 'start', maxWidth: 1280, margin: '32px auto 0', padding: '0 40px' }}>
         {/* Left: jump-to nav */}
-        <div data-reveal style={{ background: '#fff', border: '1px solid #EDE7E2', borderRadius: 18,
+        <div data-reveal className="prototype-nav" style={{ background: '#fff', border: '1px solid #EDE7E2', borderRadius: 18,
           padding: 18, position: 'sticky', top: 24 }}>
           <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 10,
             letterSpacing: 1.5, color: '#7A6E68', fontWeight: 700, marginBottom: 12 }}>SALTAR A</div>
@@ -302,7 +302,7 @@ function PrototypeSection() {
         </div>
 
         {/* Right: callouts */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, position: 'sticky', top: 24 }}>
+        <div className="prototype-callouts" style={{ display: 'flex', flexDirection: 'column', gap: 12, position: 'sticky', top: 24 }}>
           {[
             { t: 'Sin conexión, garantizado', b: 'El indicador "● Sin conexión" en verde demuestra que la app sigue funcional. Toda la matriz está en el dispositivo.' },
             { t: '3 pasos · 2 minutos', b: 'Categoría animal → Sistema afectado → Síntomas. Botones grandes para uso con guantes en campo.' },
@@ -325,7 +325,7 @@ function AdminSection() {
   return (
     <section style={{ position: 'relative', zIndex: 2, padding: '40px 0 80px',
       background: '#1A1715', color: '#fff' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px 40px' }}>
+      <div className="section-shell section-shell--dark" style={{ maxWidth: 1280, margin: '0 auto', padding: '64px 40px' }}>
         <div data-reveal style={{ maxWidth: 720 }}>
           <div style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: 11,
             letterSpacing: 1.5, color: '#F65275', fontWeight: 700 }}>PANEL ADMINISTRATIVO WEB</div>
@@ -339,7 +339,7 @@ function AdminSection() {
           </div>
         </div>
 
-        <div data-reveal style={{ marginTop: 40, height: 620, borderRadius: 18, overflow: 'hidden',
+        <div data-reveal className="admin-frame" style={{ marginTop: 40, height: 620, borderRadius: 18, overflow: 'hidden',
           boxShadow: '0 40px 100px rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.08)' }}>
           {/* Browser chrome */}
           <div style={{ height: 36, background: '#2A2522', display: 'flex',
@@ -356,7 +356,7 @@ function AdminSection() {
           </div>
         </div>
 
-        <div style={{ marginTop: 40, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
+        <div className="admin-card-grid" style={{ marginTop: 40, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12 }}>
           {[
             { t: 'Importación de Excel', b: 'Sube la matriz clínica aprobada por Porkcolombia. El sistema la transforma en lógica.' },
             { t: 'Versionado automático', b: 'Cada cambio crea una nueva versión. La app descarga la última al estar en línea.' },
@@ -380,8 +380,8 @@ function AIDifferentiatorSection() {
   return (
     <section style={{ position: 'relative', zIndex: 2, padding: '72px 0 88px',
       background: '#FAF6F2' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(320px, 0.85fr) minmax(420px, 1.15fr)',
+      <div className="section-shell" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
+        <div className="ai-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(320px, 0.85fr) minmax(420px, 1.15fr)',
           gap: 48, alignItems: 'start' }}>
           <div>
             <SectionTitle eyebrow="DIFERENCIAL IA" title="Un agente operativo, no un chatbot decorativo.">
@@ -393,7 +393,7 @@ function AIDifferentiatorSection() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
+          <div className="ai-card-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
             {[
               {
                 n: '01',
@@ -430,7 +430,7 @@ function AIDifferentiatorSection() {
           </div>
         </div>
 
-        <div style={{ marginTop: 36, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+        <div className="ai-facts-grid" style={{ marginTop: 36, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
           gap: 12 }}>
           {[
             { k: 'Canales posibles', v: 'Panel web, correo, Telegram, WhatsApp o endpoint interno' },
@@ -453,7 +453,7 @@ function AIDifferentiatorSection() {
 function ScopeSection() {
   return (
     <section style={{ position: 'relative', zIndex: 2, padding: '64px 0 100px' }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
+      <div className="section-shell" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px' }}>
         <SectionTitle eyebrow="FASES & ENTREGABLES" title="Plan de ejecución por rangos">
           Siete fases con tiempos estimados. El calendario final depende del alcance aprobado, la disponibilidad de insumos y los ciclos de validación interna.
         </SectionTitle>
@@ -476,7 +476,7 @@ function ScopeSection() {
           </div>
         </div>
 
-        <div style={{ marginTop: 32, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+        <div className="scope-grid" style={{ marginTop: 32, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
           {[
             { ph: 'F1', wk: '2-3 sem.', t: 'Levantamiento y matriz clínica', items: ['Análisis de matriz Excel', 'Modelo de datos JSON', 'Validación con equipo técnico', 'Criterios de aceptación'] },
             { ph: 'F2', wk: '3-4 sem.', t: 'Diseño funcional e interfaces', items: ['UX/UI para uso en campo', 'Flujo guiado de síntomas', 'Diseño del panel web', 'Wireframes validados'] },
@@ -540,7 +540,7 @@ function ScopeSection() {
         </div>
 
         {/* Why us */}
-        <div data-reveal style={{ marginTop: 64, background: '#FFE4EA', borderRadius: 24, padding: 40 }}>
+        <div data-reveal className="why-section" style={{ marginTop: 64, background: '#FFE4EA', borderRadius: 24, padding: 40 }}>
           <SectionTitle eyebrow="POR QUÉ ESTA PROPUESTA" title="No solo construimos la app. La pensamos como sistema."/>
           <div style={{ marginTop: 24, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
             {[
@@ -564,9 +564,9 @@ function ScopeSection() {
 
 function Footer() {
   return (
-    <footer style={{ background: '#1A1715', color: '#fff', padding: '80px 40px',
+    <footer className="footer-section" style={{ background: '#1A1715', color: '#fff', padding: '80px 40px',
       position: 'relative', zIndex: 2 }}>
-      <div style={{ maxWidth: 1280, margin: '0 auto',
+      <div className="footer-grid" style={{ maxWidth: 1280, margin: '0 auto',
         display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 40, flexWrap: 'wrap' }}>
         <div>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
