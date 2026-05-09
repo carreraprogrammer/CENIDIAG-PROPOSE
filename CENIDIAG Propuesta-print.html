@@ -2146,12 +2146,15 @@ function ScopeSection() {
           Cuatro frentes de trabajo con tiempos estimados. El calendario final depende del alcance aprobado, la disponibilidad de insumos y los ciclos de validación interna.
         </SectionTitle>
 
-        <div style={{ marginTop: 32, display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+        <div style={{ marginTop: 32, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
           {[
-            { ph: 'F1', wk: '4-6 sem.', t: 'Diseño & lógica', items: ['UX/UI definitivo', 'Transformación matriz Excel -> JSON', 'Arquitectura offline-first', 'Validación con equipo técnico'] },
-            { ph: 'F2', wk: '10-14 sem.', t: 'Desarrollo móvil', items: ['App iOS + Android (Ionic)', 'Motor de diagnóstico', 'Registro de usuarios', 'Sincronización offline'] },
-            { ph: 'F3', wk: '6-8 sem.', t: 'Panel admin web', items: ['Importador de Excel', 'Versionado de matriz', 'Gestión de usuarios', 'Dashboard de reportes'] },
-            { ph: 'F4', wk: '3-4 sem.', t: 'Publicación', items: ['App Store + Play Store', 'Pruebas con usuarios de campo', 'Documentación operativa', 'Capacitación al equipo'] },
+            { ph: 'F1', wk: '2-3 sem.', t: 'Levantamiento y matriz clínica', items: ['Análisis Excel: enfermedades, síntomas, edades', 'Definición del modelo de datos JSON', 'Validación del mapeo con equipo técnico', 'Criterios de aceptación firmados'] },
+            { ph: 'F2', wk: '3-4 sem.', t: 'Diseño funcional e interfaces', items: ['UX/UI para campo: botones grandes, contraste alto', 'Flujo guiado de selección de síntomas', 'Diseño del panel administrativo web', 'Wireframes validados con Porkcolombia'] },
+            { ph: 'F3', wk: '2-3 sem.', t: 'Arquitectura técnica', items: ['Arquitectura cross-platform (Ionic + panel web)', 'Modelo de datos local (RxDB) y en la nube', 'Estrategia de sincronización offline-first', 'Roles, seguridad y autenticación'] },
+            { ph: 'F4', wk: '5-7 sem.', t: 'Núcleo del sistema', items: ['Backend (API + base de datos)', 'Motor determinístico sobre matriz JSON', 'Sincronización offline → nube', 'Versionado automático de matriz'] },
+            { ph: 'F5', wk: '8-10 sem.', t: 'App móvil iOS + Android', items: ['Desarrollo cross-platform en Ionic', 'Registro de usuario y datos de granja', 'Almacenamiento local con RxDB', 'Sincronización automática con la nube'] },
+            { ph: 'F6', wk: '4-6 sem.', t: 'Panel administrativo web', items: ['Importador de Excel → JSON estructurado', 'Versionado automático de matriz clínica', 'Listado consolidado de porcicultores y granjas', 'Roles administrativos y autenticación'] },
+            { ph: 'F7', wk: '3-4 sem.', t: 'Pruebas, publicación y entrega', items: ['Pruebas funcionales y de usabilidad offline', 'Publicación en App Store + Play Store', 'Capacitación al equipo administrativo', 'Handoff técnico y entrega de código fuente'] },
           ].map((p, i) => (
             <div key={i} style={{ background: '#fff', border: '1px solid #EDE7E2', borderRadius: 18,
               padding: 20, position: 'relative', overflow: 'hidden' }}>
