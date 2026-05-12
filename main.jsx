@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Analytics } from '@vercel/analytics/react';
 import './style.css';
 import { IOSDevice } from './ios-frame.jsx';
 import { PhoneApp } from './app.jsx';
@@ -740,5 +741,6 @@ function App() {
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App/>
+    <Analytics/>
   </React.StrictMode>
 );
